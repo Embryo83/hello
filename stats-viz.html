@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>String Theory - Статистика прослушиваний (2021-2023)</title>
+    <title>String Theory - Statistics</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent: #38bdf8;
-            --accent-hover: #0ea5e9;
-            --border: #334155;
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #bb86fc;
+            --accent-hover: #9965f4;
+            --border: #333;
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
-            color: var(--text-main);
+            color: var(--text-primary);
             margin: 0;
             padding: 20px;
             line-height: 1.6;
@@ -39,37 +39,57 @@
 
         h1 {
             font-size: 2.5rem;
-            margin-bottom: 10px;
-            background: linear-gradient(90deg, #38bdf8, #818cf8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            margin: 0;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
-        .subtitle {
-            color: var(--text-muted);
-            font-size: 1.1rem;
+        h2 {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            margin-top: 5px;
         }
 
-        /* Dashboard Grid */
-        .dashboard {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
             margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background-color: var(--card-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        button:hover, button.active {
+            background-color: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
         }
 
         .stat-card {
             background-color: var(--card-bg);
             padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            border-radius: 10px;
             text-align: center;
-            border: 1px solid var(--border);
-            transition: transform 0.2s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
 
         .stat-value {
@@ -77,71 +97,29 @@
             font-weight: bold;
             color: var(--accent);
             display: block;
-            margin-bottom: 5px;
         }
 
         .stat-label {
-            color: var(--text-muted);
+            color: var(--text-secondary);
             font-size: 0.9rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Charts Section */
-        .charts-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        @media (min-width: 768px) {
-            .charts-grid {
-                grid-template-columns: 2fr 1fr;
-            }
         }
 
         .chart-container {
             background-color: var(--card-bg);
             padding: 20px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin-bottom: 40px;
             position: relative;
             height: 400px;
+            width: 100%;
         }
 
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        button {
-            background-color: var(--card-bg);
-            color: var(--text-main);
-            border: 1px solid var(--border);
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-weight: 600;
-        }
-
-        button:hover, button.active {
-            background-color: var(--accent);
-            color: #0f172a;
-            border-color: var(--accent);
-        }
-
-        /* Table Section */
         .table-container {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 20px;
             overflow-x: auto;
-            border: 1px solid var(--border);
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
         }
 
         table {
@@ -151,7 +129,7 @@
         }
 
         th, td {
-            padding: 12px 15px;
+            padding: 12px;
             text-align: right;
             border-bottom: 1px solid var(--border);
         }
@@ -161,51 +139,51 @@
             position: sticky;
             left: 0;
             background-color: var(--card-bg);
-            z-index: 10;
+            z-index: 1;
         }
         
+        /* Fix for sticky header background */
+        thead th {
+            background-color: #2c2c2c;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+        
+        thead th:first-child {
+            z-index: 3;
+        }
+
         th {
-            background-color: #253347;
             color: var(--accent);
             font-weight: 600;
+            white-space: nowrap;
         }
 
         tr:hover {
-            background-color: #253347;
+            background-color: #2a2a2a;
         }
 
-        .total-row {
-            font-weight: bold;
-            color: var(--accent);
-            border-top: 2px solid var(--border);
-        }
-
-        .bar-cell {
+        .track-bar {
             height: 4px;
-            background-color: var(--border);
+            background-color: #333;
             border-radius: 2px;
             margin-top: 5px;
             overflow: hidden;
         }
-        
-        .bar-fill {
+
+        .track-fill {
             height: 100%;
             background-color: var(--accent);
             width: 0%;
-            transition: width 0.5s ease;
+            transition: width 1s ease-in-out;
         }
 
-        .track-name-cell {
-            display: flex;
-            flex-direction: column;
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8rem; }
+            .chart-container { height: 300px; }
+            th, td { padding: 8px 4px; font-size: 0.8rem; }
         }
-        
-        .track-sub {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-top: 2px;
-        }
-
     </style>
 </head>
 <body>
@@ -213,476 +191,316 @@
 <div class="container">
     <header>
         <h1>String Theory</h1>
-        <div class="subtitle">Динамика прослушиваний альбома (Июнь 2021 — Декабрь 2023)</div>
+        <h2>Listening Statistics (2021 - 2024)</h2>
     </header>
 
-    <div class="dashboard" id="statsDashboard">
-        <!-- Cards will be injected here -->
-    </div>
-
     <div class="controls">
-        <button onclick="setView('timeline')" class="active" id="btn-timeline">Динамика по времени</button>
-        <button onclick="setView('distribution')" id="btn-distribution">Распределение по трекам</button>
-        <button onclick="setView('heatmap')" id="btn-heatmap">Годовая активность</button>
+        <button onclick="updateChart('line')" id="btn-line" class="active">Timeline</button>
+        <button onclick="updateChart('bar')" id="btn-bar">By Track</button>
+        <button onclick="updateChart('doughnut')" id="btn-doughnut">Distribution</button>
+        <button onclick="resetData()">Reset View</button>
     </div>
 
-    <div class="charts-grid">
-        <div class="chart-container">
-            <canvas id="mainChart"></canvas>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <span class="stat-value" id="total-listens">0</span>
+            <span class="stat-label">Total Listens</span>
         </div>
-        <div class="chart-container">
-            <canvas id="sideChart"></canvas>
+        <div class="stat-card">
+            <span class="stat-value" id="top-track">-</span>
+            <span class="stat-label">Most Popular Track</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value" id="peak-month">-</span>
+            <span class="stat-label">Peak Month</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value" id="avg-monthly">0</span>
+            <span class="stat-label">Avg. Monthly Listens</span>
         </div>
     </div>
 
-    <h2 style="margin-top: 40px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">Детальная статистика</h2>
+    <div class="chart-container">
+        <canvas id="mainChart"></canvas>
+    </div>
+
     <div class="table-container">
         <table id="statsTable">
             <thead>
-                <tr id="tableHeader"></tr>
+                <tr id="tableHeader">
+                    <!-- Headers generated by JS -->
+                </tr>
             </thead>
-            <tbody id="tableBody"></tbody>
+            <tbody id="tableBody">
+                <!-- Rows generated by JS -->
+            </tbody>
         </table>
     </div>
 </div>
 
 <script>
-    // --- RAW DATA ---
-    // Format: [Jun, Jul, Aug, Sep, Oct, Nov, Dec] for 2021
-    // Full year arrays for 2022 and 2023
+    // Data Structure: [Year, Month, Value]
+    // Months are 1-indexed in input, converted to 0-indexed for Date if needed, but here we use string labels
     
-    const tracks = [
-        "250 kmh",
-        "A Land of Milk",
-        "Moonpath",
-        "Overclean",
-        "One Day Closer",
-        "At Night",
-        "The Last in the World",
-        "Trees Lost Their Burning Leaves",
-        "Tears Were Falling from the Trees",
-        "Sex",
-        "When There's Light",
-        "Come To You",
-        "Event Horizon",
-        "We Are Burning",
-        "With You By My Side"
+    const rawData = [
+        // 2021 (Starts June)
+        { track: "250 kmh", data: { "06.2021": 24, "07.2021": 6, "08.2021": 5, "09.2021": 3, "10.2021": 2, "11.2021": 0, "12.2021": 0 } },
+        { track: "A Land of Milk", data: { "06.2021": 27, "07.2021": 4, "08.2021": 5, "09.2021": 0, "10.2021": 0, "11.2021": 2, "12.2021": 0 } },
+        { track: "Moonpath", data: { "06.2021": 61, "07.2021": 21, "08.2021": 7, "09.2021": 0, "10.2021": 0, "11.2021": 1, "12.2021": 3 } },
+        { track: "Overclean", data: { "06.2021": 53, "07.2021": 27, "08.2021": 22, "09.2021": 9, "10.2021": 4, "11.2021": 3, "12.2021": 5 } },
+        { track: "One Day Closer", data: { "06.2021": 298, "07.2021": 108, "08.2021": 14, "09.2021": 5, "10.2021": 2, "11.2021": 9, "12.2021": 8 } },
+        { track: "At Night", data: { "06.2021": 28, "07.2021": 5, "08.2021": 7, "09.2021": 4, "10.2021": 0, "11.2021": 2, "12.2021": 1 } },
+        { track: "The Last in the World", data: { "06.2021": 26, "07.2021": 9, "08.2021": 7, "09.2021": 1, "10.2021": 3, "11.2021": 6, "12.2021": 11 } },
+        { track: "Trees Lost Their Burning Leaves", data: { "06.2021": 39, "07.2021": 7, "08.2021": 8, "09.2021": 1, "10.2021": 0, "11.2021": 3, "12.2021": 1 } },
+        { track: "Tears Were Falling from the Trees", data: { "06.2021": 94, "07.2021": 99, "08.2021": 58, "09.2021": 52, "10.2021": 41, "11.2021": 68, "12.2021": 93 } },
+        { track: "Sex", data: { "06.2021": 171, "07.2021": 43, "08.2021": 46, "09.2021": 98, "10.2021": 29, "11.2021": 82, "12.2021": 17 } },
+        { track: "When There's Light", data: { "06.2021": 29, "07.2021": 10, "08.2021": 7, "09.2021": 2, "10.2021": 1, "11.2021": 2, "12.2021": 2 } },
+        { track: "Come To You", data: { "06.2021": 79, "07.2021": 16, "08.2021": 13, "09.2021": 6, "10.2021": 2, "11.2021": 2, "12.2021": 4 } },
+        { track: "Event Horizon", data: { "06.2021": 29, "07.2021": 5, "08.2021": 7, "09.2021": 2, "10.2021": 0, "11.2021": 4, "12.2021": 0 } },
+        { track: "We Are Burning", data: { "06.2021": 27, "07.2021": 7, "08.2021": 7, "09.2021": 2, "10.2021": 0, "11.2021": 2, "12.2021": 0 } },
+        { track: "With You by My Side", data: { "06.2021": 23, "07.2021": 4, "08.2021": 12, "09.2021": 2, "10.2021": 0, "11.2021": 0, "12.2021": 0 } },
+        
+        // 2022
+        { track: "250 kmh", data: { "01.2022": 6, "02.2022": 3, "03.2022": 1, "04.2022": 1, "05.2022": 4, "06.2022": 2, "07.2022": 1, "08.2022": 4, "09.2022": 5, "10.2022": 0, "11.2022": 4, "12.2022": 2 } },
+        { track: "A Land of Milk", data: { "01.2022": 0, "02.2022": 1, "03.2022": 1, "04.2022": 1, "05.2022": 0, "06.2022": 0, "07.2022": 2, "08.2022": 1, "09.2022": 2, "10.2022": 0, "11.2022": 2, "12.2022": 2 } },
+        { track: "Moonpath", data: { "01.2022": 1, "02.2022": 2, "03.2022": 3, "04.2022": 3, "05.2022": 2, "06.2022": 10, "07.2022": 1, "08.2022": 2, "09.2022": 3, "10.2022": 4, "11.2022": 0, "12.2022": 2 } },
+        { track: "Overclean", data: { "01.2022": 2, "02.2022": 5, "03.2022": 2, "04.2022": 1, "05.2022": 0, "06.2022": 0, "07.2022": 2, "08.2022": 2, "09.2022": 7, "10.2022": 2, "11.2022": 0, "12.2022": 3 } },
+        { track: "One Day Closer", data: { "01.2022": 6, "02.2022": 4, "03.2022": 4, "04.2022": 3, "05.2022": 3, "06.2022": 4, "07.2022": 0, "08.2022": 4, "09.2022": 6, "10.2022": 2, "11.2022": 4, "12.2022": 3 } },
+        { track: "At Night", data: { "01.2022": 0, "02.2022": 2, "03.2022": 3, "04.2022": 2, "05.2022": 0, "06.2022": 0, "07.2022": 0, "08.2022": 1, "09.2022": 1, "10.2022": 0, "11.2022": 2, "12.2022": 1 } },
+        { track: "The Last in the World", data: { "01.2022": 20, "02.2022": 2, "03.2022": 2, "04.2022": 2, "05.2022": 0, "06.2022": 0, "07.2022": 1, "08.2022": 3, "09.2022": 2, "10.2022": 4, "11.2022": 1, "12.2022": 1 } },
+        { track: "Trees Lost Their Burning Leaves", data: { "01.2022": 0, "02.2022": 3, "03.2022": 2, "04.2022": 1, "05.2022": 2, "06.2022": 2, "07.2022": 1, "08.2022": 4, "09.2022": 3, "10.2022": 0, "11.2022": 4, "12.2022": 0 } },
+        { track: "Tears Were Falling from the Trees", data: { "01.2022": 102, "02.2022": 158, "03.2022": 95, "04.2022": 56, "05.2022": 127, "06.2022": 123, "07.2022": 152, "08.2022": 154, "09.2022": 85, "10.2022": 33, "11.2022": 29, "12.2022": 39 } },
+        { track: "Sex", data: { "01.2022": 46, "02.2022": 7, "03.2022": 13, "04.2022": 10, "05.2022": 13, "06.2022": 14, "07.2022": 28, "08.2022": 12, "09.2022": 5, "10.2022": 6, "11.2022": 8, "12.2022": 9 } },
+        { track: "When There's Light", data: { "01.2022": 0, "02.2022": 1, "03.2022": 0, "04.2022": 1, "05.2022": 0, "06.2022": 0, "07.2022": 1, "08.2022": 1, "09.2022": 3, "10.2022": 1, "11.2022": 0, "12.2022": 1 } },
+        { track: "Come To You", data: { "01.2022": 1, "02.2022": 1, "03.2022": 0, "04.2022": 3, "05.2022": 2, "06.2022": 2, "07.2022": 1, "08.2022": 2, "09.2022": 2, "10.2022": 0, "11.2022": 1, "12.2022": 2 } },
+        { track: "Event Horizon", data: { "01.2022": 0, "02.2022": 0, "03.2022": 0, "04.2022": 3, "05.2022": 0, "06.2022": 0, "07.2022": 0, "08.2022": 2, "09.2022": 1, "10.2022": 2, "11.2022": 2, "12.2022": 1 } },
+        { track: "We Are Burning", data: { "01.2022": 2, "02.2022": 3, "03.2022": 3, "04.2022": 3, "05.2022": 0, "06.2022": 0, "07.2022": 0, "08.2022": 2, "09.2022": 1, "10.2022": 3, "11.2022": 8, "12.2022": 7 } },
+        { track: "With You By My Side", data: { "01.2022": 0, "02.2022": 3, "03.2022": 9, "04.2022": 4, "05.2022": 2, "06.2022": 2, "07.2022": 3, "08.2022": 11, "09.2022": 1, "10.2022": 1, "11.2022": 2, "12.2022": 3 } },
+
+        // 2023
+        { track: "250 kmh", data: { "01.2023": 4, "02.2023": 1, "03.2023": 4, "04.2023": 5, "05.2023": 5, "06.2023": 4, "07.2023": 4, "08.2023": 6, "09.2023": 3, "10.2023": 2, "11.2023": 4, "12.2023": 2 } },
+        { track: "A Land of Milk", data: { "01.2023": 3, "02.2023": 1, "03.2023": 1, "04.2023": 0, "05.2023": 1, "06.2023": 2, "07.2023": 0, "08.2023": 0, "09.2023": 0, "10.2023": 1, "11.2023": 1, "12.2023": 0 } },
+        { track: "Moonpath", data: { "01.2023": 3, "02.2023": 2, "03.2023": 1, "04.2023": 2, "05.2023": 2, "06.2023": 1, "07.2023": 0, "08.2023": 0, "09.2023": 1, "10.2023": 2, "11.2023": 0, "12.2023": 0 } },
+        { track: "Overclean", data: { "01.2023": 1, "02.2023": 2, "03.2023": 0, "04.2023": 2, "05.2023": 1, "06.2023": 0, "07.2023": 0, "08.2023": 1, "09.2023": 1, "10.2023": 3, "11.2023": 1, "12.2023": 1 } },
+        { track: "One Day Closer", data: { "01.2023": 1, "02.2023": 3, "03.2023": 1, "04.2023": 3, "05.2023": 4, "06.2023": 3, "07.2023": 1, "08.2023": 2, "09.2023": 4, "10.2023": 2, "11.2023": 0, "12.2023": 0 } },
+        { track: "At Night", data: { "01.2023": 1, "02.2023": 1, "03.2023": 2, "04.2023": 0, "05.2023": 1, "06.2023": 0, "07.2023": 0, "08.2023": 0, "09.2023": 0, "10.2023": 1, "11.2023": 0, "12.2023": 0 } },
+        { track: "The Last in the World", data: { "01.2023": 3, "02.2023": 2, "03.2023": 0, "04.2023": 1, "05.2023": 0, "06.2023": 1, "07.2023": 0, "08.2023": 1, "09.2023": 1, "10.2023": 1, "11.2023": 0, "12.2023": 0 } },
+        { track: "Trees Lost Their Burning Leaves", data: { "01.2023": 3, "02.2023": 2, "03.2023": 1, "04.2023": 0, "05.2023": 2, "06.2023": 1, "07.2023": 1, "08.2023": 0, "09.2023": 0, "10.2023": 1, "11.2023": 0, "12.2023": 0 } },
+        { track: "Tears Were Falling from the Trees", data: { "01.2023": 35, "02.2023": 28, "03.2023": 44, "04.2023": 74, "05.2023": 72, "06.2023": 14, "07.2023": 28, "08.2023": 15, "09.2023": 13, "10.2023": 15, "11.2023": 15, "12.2023": 30 } },
+        { track: "Sex", data: { "01.2023": 7, "02.2023": 3, "03.2023": 5, "04.2023": 5, "05.2023": 4, "06.2023": 9, "07.2023": 5, "08.2023": 7, "09.2023": 2, "10.2023": 5, "11.2023": 6, "12.2023": 0 } },
+        { track: "When There's Light", data: { "01.2023": 3, "02.2023": 1, "03.2023": 3, "04.2023": 1, "05.2023": 0, "06.2023": 4, "07.2023": 0, "08.2023": 0, "09.2023": 2, "10.2023": 3, "11.2023": 2, "12.2023": 2 } },
+        { track: "Come To You", data: { "01.2023": 3, "02.2023": 3, "03.2023": 2, "04.2023": 5, "05.2023": 4, "06.2023": 1, "07.2023": 0, "08.2023": 1, "09.2023": 0, "10.2023": 1, "11.2023": 2, "12.2023": 1 } },
+        { track: "Event Horizon", data: { "01.2023": 2, "02.2023": 1, "03.2023": 0, "04.2023": 0, "05.2023": 2, "06.2023": 1, "07.2023": 1, "08.2023": 0, "09.2023": 0, "10.2023": 1, "11.2023": 0, "12.2023": 0 } },
+        { track: "We Are Burning", data: { "01.2023": 6, "02.2023": 4, "03.2023": 2, "04.2023": 9, "05.2023": 4, "06.2023": 1, "07.2023": 6, "08.2023": 4, "09.2023": 2, "10.2023": 2, "11.2023": 12, "12.2023": 7 } },
+        { track: "With You By My Side", data: { "01.2023": 3, "02.2023": 2, "03.2023": 4, "04.2023": 2, "05.2023": 0, "06.2023": 2, "07.2023": 0, "08.2023": 1, "09.2023": 1, "10.2023": 1, "11.2023": 2, "12.2023": 1 } },
+
+        // 2024
+        { track: "250 kmh", data: { "01.2024": 1, "02.2024": 1, "03.2024": 1, "04.2024": 0, "05.2024": 1, "06.2024": 5, "07.2024": 8, "08.2024": 6, "09.2024": 8, "10.2024": 8, "11.2024": 25, "12.2024": 21 } },
+        { track: "A Land of Milk", data: { "01.2024": 0, "02.2024": 21, "03.2024": 2, "04.2024": 0, "05.2024": 0, "06.2024": 0, "07.2024": 0, "08.2024": 0, "09.2024": 1, "10.2024": 1, "11.2024": 0, "12.2024": 1 } },
+        { track: "Moonpath", data: { "01.2024": 1, "02.2024": 1, "03.2024": 2, "04.2024": 2, "05.2024": 3, "06.2024": 0, "07.2024": 0, "08.2024": 0, "09.2024": 2, "10.2024": 1, "11.2024": 1, "12.2024": 2 } },
+        { track: "Overclean", data: { "01.2024": 0, "02.2024": 2, "03.2024": 1, "04.2024": 0, "05.2024": 0, "06.2024": 1, "07.2024": 0, "08.2024": 3, "09.2024": 2, "10.2024": 0, "11.2024": 1, "12.2024": 2 } },
+        { track: "One Day Closer", data: { "01.2024": 1, "02.2024": 0, "03.2024": 2, "04.2024": 1, "05.2024": 3, "06.2024": 0, "07.2024": 0, "08.2024": 3, "09.2024": 8, "10.2024": 4, "11.2024": 1, "12.2024": 3 } },
+        { track: "At Night", data: { "01.2024": 0, "02.2024": 0, "03.2024": 0, "04.2024": 0, "05.2024": 0, "06.2024": 0, "07.2024": 0, "08.2024": 0, "09.2024": 2, "10.2024": 0, "11.2024": 0, "12.2024": 1 } },
+        { track: "The Last in the World", data: { "01.2024": 2, "02.2024": 1, "03.2024": 0, "04.2024": 2, "05.2024": 0, "06.2024": 0, "07.2024": 0, "08.2024": 0, "09.2024": 1, "10.2024": 1, "11.2024": 1, "12.2024": 0 } },
+        { track: "Trees Lost Their Burning Leaves", data: { "01.2024": 0, "02.2024": 0, "03.2024": 0, "04.2024": 1, "05.2024": 1, "06.2024": 0, "07.2024": 0, "08.2024": 1, "09.2024": 1, "10.2024": 0, "11.2024": 1, "12.2024": 0 } },
+        { track: "Tears Were Falling from the Trees", data: { "01.2024": 20, "02.2024": 10, "03.2024": 26, "04.2024": 25, "05.2024": 12, "06.2024": 11, "07.2024": 10, "08.2024": 12, "09.2024": 3, "10.2024": 12, "11.2024": 8, "12.2024": 4 } },
+        { track: "Sex", data: { "01.2024": 1, "02.2024": 6, "03.2024": 6, "04.2024": 7, "05.2024": 2, "06.2024": 1, "07.2024": 1, "08.2024": 9, "09.2024": 4, "10.2024": 3, "11.2024": 2, "12.2024": 2 } },
+        { track: "When There's Light", data: { "01.2024": 0, "02.2024": 1, "03.2024": 0, "04.2024": 0, "05.2024": 0, "06.2024": 2, "07.2024": 0, "08.2024": 0, "09.2024": 1, "10.2024": 0, "11.2024": 1, "12.2024": 1 } },
+        { track: "Come To You", data: { "01.2024": 2, "02.2024": 0, "03.2024": 1, "04.2024": 2, "05.2024": 0, "06.2024": 1, "07.2024": 2, "08.2024": 3, "09.2024": 4, "10.2024": 5, "11.2024": 4, "12.2024": 1 } },
+        { track: "Event Horizon", data: { "01.2024": 1, "02.2024": 0, "03.2024": 0, "04.2024": 0, "05.2024": 0, "06.2024": 0, "07.2024": 0, "08.2024": 2, "09.2024": 3, "10.2024": 0, "11.2024": 0, "12.2024": 2 } },
+        { track: "We Are Burning", data: { "01.2024": 8, "02.2024": 3, "03.2024": 3, "04.2024": 10, "05.2024": 13, "06.2024": 5, "07.2024": 6, "08.2024": 12, "09.2024": 8, "10.2024": 14, "11.2024": 32, "12.2024": 24 } },
+        { track: "With You By My Side", data: { "01.2024": 3, "02.2024": 0, "03.2024": 0, "04.2024": 0, "05.2024": 0, "06.2024": 4, "07.2024": 0, "08.2024": 0, "09.2024": 5, "10.2024": 1, "11.2024": 0, "12.2024": 1 } }
     ];
 
-    // Data structure: { trackName: [values...] }
-    // 2021 starts from June (index 0 = June). We will pad with 0s for Jan-May later if needed for alignment, 
-    // but for simplicity in charts, we'll map months explicitly.
-    
-    const rawData = {
-        "250 kmh": {
-            2021: [24, 6, 5, 3, 2, 0, 0], // Jun-Dec
-            2022: [6, 3, 1, 1, 4, 2, 1, 4, 5, 0, 4, 2],
-            2023: [4, 1, 4, 5, 5, 4, 4, 6, 3, 2, 4, 2]
-        },
-        "A Land of Milk": {
-            2021: [27, 4, 5, 0, 0, 2, 0],
-            2022: [0, 1, 1, 1, 0, 0, 2, 1, 2, 0, 2, 2],
-            2023: [3, 1, 1, 0, 1, 2, 0, 0, 0, 1, 1, 0] // Filled missing Dec with 0
-        },
-        "Moonpath": {
-            2021: [61, 21, 7, 0, 0, 1, 3],
-            2022: [1, 2, 3, 3, 2, 10, 1, 2, 3, 4, 0, 2],
-            2023: [3, 2, 1, 2, 2, 1, 0, 0, 1, 2, 0, 0] // Filled missing Nov, Dec with 0
-        },
-        "Overclean": {
-            2021: [53, 27, 22, 9, 4, 3, 5],
-            2022: [2, 5, 2, 1, 0, 0, 2, 2, 7, 2, 0, 3],
-            2023: [1, 2, 0, 2, 1, 0, 0, 1, 1, 3, 1, 1]
-        },
-        "One Day Closer": {
-            2021: [298, 108, 14, 5, 2, 9, 8],
-            2022: [6, 4, 4, 3, 3, 4, 0, 4, 6, 2, 4, 3],
-            2023: [1, 3, 1, 3, 4, 3, 1, 2, 4, 2, 0, 0] // Filled missing Dec with 0
-        },
-        "At Night": {
-            2021: [28, 5, 7, 4, 0, 2, 1],
-            2022: [0, 2, 3, 2, 0, 0, 0, 1, 1, 0, 2, 1],
-            2023: [1, 1, 2, 0, 1, 0, 0, 0, 0, 1, 0, 0] // Filled missing Dec with 0
-        },
-        "The Last in the World": {
-            2021: [26, 9, 7, 1, 3, 6, 11],
-            2022: [20, 2, 2, 2, 0, 0, 1, 3, 2, 4, 1, 1],
-            2023: [3, 2, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0] // Filled missing Dec with 0
-        },
-        "Trees Lost Their Burning Leaves": {
-            2021: [39, 7, 8, 1, 0, 3, 1],
-            2022: [0, 3, 2, 1, 2, 2, 1, 4, 3, 0, 4, 0],
-            2023: [3, 2, 1, 0, 2, 1, 1, 0, 0, 1, 0, 0] // Filled missing Dec with 0
-        },
-        "Tears Were Falling from the Trees": {
-            2021: [94, 99, 58, 52, 41, 68, 93],
-            2022: [102, 158, 95, 56, 127, 123, 152, 154, 85, 33, 29, 39],
-            2023: [35, 28, 44, 74, 72, 14, 28, 15, 13, 15, 15, 30]
-        },
-        "Sex": {
-            2021: [171, 43, 46, 98, 29, 82, 17],
-            2022: [46, 7, 13, 10, 13, 14, 28, 12, 5, 6, 8, 9],
-            2023: [7, 3, 5, 5, 4, 9, 5, 7, 2, 5, 6, 0] // Filled missing Dec with 0
-        },
-        "When There's Light": {
-            2021: [29, 10, 7, 2, 1, 2, 2],
-            2022: [0, 1, 0, 1, 0, 0, 1, 1, 3, 1, 0, 1],
-            2023: [3, 1, 3, 1, 0, 4, 0, 0, 2, 3, 2, 2]
-        },
-        "Come To You": {
-            2021: [79, 16, 13, 6, 2, 2, 4],
-            2022: [1, 1, 0, 3, 2, 2, 1, 2, 2, 0, 1, 2],
-            2023: [3, 3, 2, 5, 4, 1, 0, 1, 0, 1, 2, 1]
-        },
-        "Event Horizon": {
-            2021: [29, 5, 7, 2, 0, 4, 0],
-            2022: [0, 0, 0, 3, 0, 0, 0, 2, 1, 2, 2, 1],
-            2023: [2, 1, 0, 0, 2, 1, 1, 0, 0, 1, 0, 0] // Filled missing Dec with 0
-        },
-        "We Are Burning": {
-            2021: [27, 7, 7, 2, 0, 2, 0],
-            2022: [2, 3, 3, 3, 0, 0, 0, 2, 1, 3, 8, 7],
-            2023: [6, 4, 2, 9, 4, 1, 6, 4, 2, 2, 12, 7]
-        },
-        "With You By My Side": {
-            2021: [23, 4, 12, 2, 0, 0, 0],
-            2022: [0, 3, 9, 4, 2, 2, 3, 11, 1, 1, 2, 3],
-            2023: [3, 2, 4, 2, 0, 2, 0, 1, 1, 1, 2, 1]
-        }
-    };
+    let chartInstance = null;
+    let currentView = 'line';
 
-    // Helper to generate full timeline labels and data
     function processData() {
-        const monthsFull = ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"];
-        let labels = [];
-        let years = [2021, 2022, 2023];
-        
-        // Generate labels
-        // 2021 starts from June (index 5)
-        for(let m=5; m<12; m++) labels.push(`Июн-${m===5?'21':m===6?'21':m===7?'21':m===8?'21':m===9?'21':m===10?'21':'21'}`); 
-        // Let's do it properly with Year-Month
-        labels = [];
-        for (let m = 5; m < 12; m++) labels.push(`${monthsFull[m]} '21`);
-        for (let m = 0; m < 12; m++) labels.push(`${monthsFull[m]} '22`);
-        for (let m = 0; m < 12; m++) labels.push(`${monthsFull[m]} '23`);
+        const tracks = {};
+        const monthsSet = new Set();
 
-        let datasets = [];
-        let totals = new Array(labels.length).fill(0);
-        let trackTotals = {};
-
-        tracks.forEach((track, index) => {
-            let dataPoints = [];
-            let sum = 0;
-
-            // 2021 part (7 months)
-            rawData[track][2021].forEach(val => {
-                dataPoints.push(val);
-                sum += val;
-            });
-            // 2022 part
-            rawData[track][2022].forEach(val => {
-                dataPoints.push(val);
-                sum += val;
-            });
-            // 2023 part
-            rawData[track][2023].forEach(val => {
-                dataPoints.push(val);
-                sum += val;
-            });
-
-            trackTotals[track] = sum;
-
-            // Add to global totals
-            dataPoints.forEach((val, i) => {
-                totals[i] += val;
-            });
-
-            // Color generation based on index
-            const hue = (index * 25) % 360;
-            const color = `hsla(${hue}, 70%, 60%, 0.8)`;
-            const bgColor = `hsla(${hue}, 70%, 60%, 0.2)`;
-
-            datasets.push({
-                label: track,
-                data: dataPoints,
-                borderColor: color,
-                backgroundColor: bgColor,
-                borderWidth: 2,
-                pointRadius: 1,
-                fill: false,
-                hidden: index > 4 // Hide some by default to avoid clutter
-            });
+        rawData.forEach(item => {
+            if (!tracks[item.track]) tracks[item.track] = {};
+            for (const [month, count] of Object.entries(item.data)) {
+                tracks[item.track][month] = count;
+                monthsSet.add(month);
+            }
         });
 
-        return { labels, datasets, totals, trackTotals };
+        const sortedMonths = Array.from(monthsSet).sort((a, b) => {
+            const [m1, y1] = a.split('.');
+            const [m2, y2] = b.split('.');
+            return new Date(y1, m1-1) - new Date(y2, m2-1);
+        });
+
+        const trackNames = Object.keys(tracks);
+        
+        // Calculate totals per track
+        const trackTotals = trackNames.map(name => {
+            let sum = 0;
+            sortedMonths.forEach(m => sum += (tracks[name][m] || 0));
+            return { name, total: sum };
+        }).sort((a, b) => b.total - a.total);
+
+        // Calculate monthly totals
+        const monthlyTotals = sortedMonths.map(m => {
+            let sum = 0;
+            trackNames.forEach(t => sum += (tracks[t][m] || 0));
+            return { month: m, total: sum };
+        });
+
+        return { tracks, sortedMonths, trackNames, trackTotals, monthlyTotals };
     }
 
-    const processed = processData();
-    let mainChartInst = null;
-    let sideChartInst = null;
+    function updateStats(data) {
+        const totalListens = data.monthlyTotals.reduce((acc, curr) => acc + curr.total, 0);
+        document.getElementById('total-listens').textContent = totalListens.toLocaleString();
 
-    function initDashboard() {
-        // Calculate KPIs
-        const totalPlays = Object.values(processed.trackTotals).reduce((a,b)=>a+b, 0);
-        const topTrack = Object.entries(processed.trackTotals).sort((a,b)=>b[1]-a[1])[0];
-        const maxMonthVal = Math.max(...processed.totals);
-        const maxMonthIndex = processed.totals.indexOf(maxMonthVal);
-        const peakMonth = processed.labels[maxMonthIndex];
+        const topTrack = data.trackTotals[0];
+        document.getElementById('top-track').textContent = topTrack.name;
 
-        // Render Cards
-        const dashboard = document.getElementById('statsDashboard');
-        dashboard.innerHTML = `
-            <div class="stat-card">
-                <span class="stat-value">${totalPlays.toLocaleString()}</span>
-                <span class="stat-label">Всего прослушиваний</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-value">${tracks.length}</span>
-                <span class="stat-label">Треков в альбоме</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-value">${topTrack[0]}</span>
-                <span class="stat-label">Лидер (${topTrack[1].toLocaleString()})</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-value">${peakMonth}</span>
-                <span class="stat-label">Пик активности (${maxMonthVal})</span>
-            </div>
-        `;
+        const peak = data.monthlyTotals.reduce((prev, current) => (prev.total > current.total) ? prev : current);
+        document.getElementById('peak-month').textContent = peak.month;
 
-        renderTable();
-        setView('timeline');
+        const avg = Math.round(totalListens / data.sortedMonths.length);
+        document.getElementById('avg-monthly').textContent = avg.toLocaleString();
     }
 
-    function setView(view) {
-        // Update buttons
+    function renderTable(data) {
+        const thead = document.getElementById('tableHeader');
+        const tbody = document.getElementById('tableBody');
+        
+        thead.innerHTML = '<th>Track</th>' + data.sortedMonths.map(m => `<th>${m}</th>`).join('') + '<th>Total</th>';
+        
+        tbody.innerHTML = '';
+        const maxTotal = data.trackTotals[0].total;
+
+        data.trackTotals.forEach(track => {
+            const tr = document.createElement('tr');
+            let cells = `<td>
+                <div>${track.name}</div>
+                <div class="track-bar"><div class="track-fill" style="width: ${(track.total / maxTotal) * 100}%"></div></div>
+            </td>`;
+            
+            data.sortedMonths.forEach(m => {
+                const val = data.tracks[track.name][m] || 0;
+                cells += `<td>${val === 0 ? '' : val}</td>`;
+            });
+            
+            cells += `<td><strong>${track.total}</strong></td>`;
+            tr.innerHTML = cells;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function updateChart(type) {
+        currentView = type;
         document.querySelectorAll('.controls button').forEach(b => b.classList.remove('active'));
-        document.getElementById(`btn-${view}`).classList.add('active');
+        document.getElementById(`btn-${type}`).classList.add('active');
 
-        const ctxMain = document.getElementById('mainChart').getContext('2d');
-        const ctxSide = document.getElementById('sideChart').getContext('2d');
+        const ctx = document.getElementById('mainChart').getContext('2d');
+        const data = processData();
 
-        if (mainChartInst) mainChartInst.destroy();
-        if (sideChartInst) sideChartInst.destroy();
+        if (chartInstance) chartInstance.destroy();
 
-        if (view === 'timeline') {
-            // Main: Line chart of all tracks (or stacked area)
-            mainChartInst = new Chart(ctxMain, {
+        const colors = [
+            '#bb86fc', '#03dac6', '#cf6679', '#ffb74d', '#4db6ac', 
+            '#ba68c8', '#ef5350', '#ffa726', '#66bb6a', '#42a5f5',
+            '#ab47bc', '#ec407a', '#ffca28', '#26a69a', '#5c6bc0'
+        ];
+
+        let config = {};
+
+        if (type === 'line') {
+            const datasets = data.trackNames.map((name, index) => ({
+                label: name,
+                data: data.sortedMonths.map(m => data.tracks[name][m] || 0),
+                borderColor: colors[index % colors.length],
+                backgroundColor: colors[index % colors.length],
+                tension: 0.3,
+                pointRadius: 2,
+                fill: false
+            }));
+
+            config = {
                 type: 'line',
-                data: {
-                    labels: processed.labels,
-                    datasets: processed.datasets
-                },
+                data: { labels: data.sortedMonths, datasets: datasets },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     interaction: { mode: 'index', intersect: false },
                     plugins: {
-                        title: { display: true, text: 'Динамика прослушиваний по месяцам', color: '#94a3b8' },
+                        legend: { position: 'bottom', labels: { color: '#b0b0b0', boxWidth: 10 } },
                         tooltip: { mode: 'index', intersect: false }
                     },
                     scales: {
-                        x: { ticks: { color: '#94a3b8', maxTicksLimit: 12 }, grid: { color: '#334155' } },
-                        y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }
+                        x: { ticks: { color: '#b0b0b0' }, grid: { color: '#333' } },
+                        y: { ticks: { color: '#b0b0b0' }, grid: { color: '#333' } }
                     }
                 }
-            });
+            };
+        } else if (type === 'bar') {
+            const datasets = [{
+                label: 'Total Listens',
+                data: data.trackTotals.map(t => t.total),
+                backgroundColor: colors,
+                borderColor: '#1e1e1e',
+                borderWidth: 1
+            }];
 
-            // Side: Total per month bar chart
-            sideChartInst = new Chart(ctxSide, {
+            config = {
                 type: 'bar',
-                data: {
-                    labels: processed.labels,
-                    datasets: [{
-                        label: 'Всего в месяц',
-                        data: processed.totals,
-                        backgroundColor: '#38bdf8',
-                        borderRadius: 4
-                    }]
-                },
+                data: { labels: data.trackTotals.map(t => t.name), datasets: datasets },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        title: { display: true, text: 'Общая активность', color: '#94a3b8' },
-                        legend: { display: false }
-                    },
-                    scales: {
-                        x: { display: false },
-                        y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }
-                    }
-                }
-            });
-
-        } else if (view === 'distribution') {
-            // Main: Bar chart of total per track
-            const sortedTracks = Object.entries(processed.trackTotals).sort((a,b) => b[1] - a[1]);
-            
-            mainChartInst = new Chart(ctxMain, {
-                type: 'bar',
-                data: {
-                    labels: sortedTracks.map(i => i[0]),
-                    datasets: [{
-                        label: 'Всего прослушиваний',
-                        data: sortedTracks.map(i => i[1]),
-                        backgroundColor: sortedTracks.map((_, i) => `hsla(${i * 25}, 70%, 60%, 0.8)`),
-                        borderRadius: 6
-                    }]
-                },
-                options: {
                     indexAxis: 'y',
-                    responsive: true,
-                    maintainAspectRatio: false,
                     plugins: {
-                        title: { display: true, text: 'Распределение по трекам (Total)', color: '#94a3b8' },
-                        legend: { display: false }
+                        legend: { display: false },
+                        tooltip: { callbacks: { label: (ctx) => `${ctx.raw} listens` } }
                     },
                     scales: {
-                        x: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } },
-                        y: { ticks: { color: '#f8fafc' }, grid: { display: false } }
+                        x: { ticks: { color: '#b0b0b0' }, grid: { color: '#333' } },
+                        y: { ticks: { color: '#b0b0b0' }, grid: { display: false } }
                     }
                 }
-            });
+            };
+        } else if (type === 'doughnut') {
+            const datasets = [{
+                data: data.trackTotals.map(t => t.total),
+                backgroundColor: colors,
+                borderColor: '#1e1e1e',
+                borderWidth: 2
+            }];
 
-            // Side: Pie chart of top 5
-            const top5 = sortedTracks.slice(0, 5);
-            const others = sortedTracks.slice(5).reduce((sum, item) => sum + item[1], 0);
-            
-            sideChartInst = new Chart(ctxSide, {
+            config = {
                 type: 'doughnut',
-                data: {
-                    labels: [...top5.map(i => i[0]), 'Остальные'],
-                    datasets: [{
-                        data: [...top5.map(i => i[1]), others],
-                        backgroundColor: [
-                            '#38bdf8', '#818cf8', '#c084fc', '#f472b6', '#fb923c', '#475569'
-                        ],
-                        borderWidth: 0
-                    }]
-                },
+                data: { labels: data.trackTotals.map(t => t.name), datasets: datasets },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        title: { display: true, text: 'Топ-5 треков', color: '#94a3b8' },
-                        legend: { position: 'bottom', labels: { color: '#94a3b8', font: {size: 10} } }
+                        legend: { position: 'right', labels: { color: '#b0b0b0', boxWidth: 10 } }
                     }
                 }
-            });
-
-        } else if (view === 'heatmap') {
-            // Simplified Heatmap using Bar groups or Scatter? 
-            // Let's do Grouped Bar by Year for each track? Too crowded.
-            // Let's do Line chart comparing Years for the TOP track only?
-            // Or Average per month across years?
-            
-            // Let's show Total per Year
-            const yearsData = [0,0,0]; // 21, 22, 23
-            
-            // Calc 2021 (only 7 months)
-            processed.datasets.forEach(ds => {
-                ds.data.slice(0, 7).forEach(v => yearsData[0] += v);
-                ds.data.slice(7, 19).forEach(v => yearsData[1] += v);
-                ds.data.slice(19, 31).forEach(v => yearsData[2] += v);
-            });
-
-            mainChartInst = new Chart(ctxMain, {
-                type: 'bar',
-                data: {
-                    labels: ['2021 (7 мес)', '2022', '2023'],
-                    datasets: [{
-                        label: 'Прослушиваний за год',
-                        data: yearsData,
-                        backgroundColor: ['#38bdf8', '#818cf8', '#c084fc'],
-                        borderRadius: 8
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        title: { display: true, text: 'Активность по годам', color: '#94a3b8' },
-                        legend: { display: false }
-                    },
-                    scales: {
-                        y: { beginAtZero: true, ticks: { color: '#94a3b8' }, grid: { color: '#334155' } },
-                        x: { ticks: { color: '#f8fafc' }, grid: { display: false } }
-                    }
-                }
-            });
-
-            // Side: Growth rate text or simple stat
-            ctxSide.canvas.parentNode.innerHTML = `
-                <div style="display:flex; flex-direction:column; justify-content:center; height:100%; text-align:center; color:#94a3b8;">
-                    <h3 style="color:#f8fafc">Тренд</h3>
-                    <p>2021 (частичный): ${yearsData[0]}</p>
-                    <p>2022 (полный): ${yearsData[1]}</p>
-                    <p>2023 (полный): ${yearsData[2]}</p>
-                    <hr style="border-color:#334155; width:50%; margin: 20px auto;">
-                    <p style="font-size:0.9rem">Данные показывают устойчивость интереса к альбому во второй полный год.</p>
-                </div>
-            `;
+            };
         }
+
+        chartInstance = new Chart(ctx, config);
     }
 
-    function renderTable() {
-        const thead = document.getElementById('tableHeader');
-        const tbody = document.getElementById('tableBody');
-        
-        // Header
-        let headerHTML = '<th>Трек</th>';
-        processed.labels.forEach(l => {
-            headerHTML += `<th>${l.split(' ')[0]}</th>`; // Just month name
-        });
-        headerHTML += '<th>TOTAL</th>';
-        thead.innerHTML = headerHTML;
-
-        // Body
-        let bodyHTML = '';
-        
-        // Sort tracks by total desc
-        const sortedEntries = Object.entries(processed.trackTotals).sort((a,b) => b[1] - a[1]);
-        const maxTotal = sortedEntries[0][1];
-
-        sortedEntries.forEach(([track, total]) => {
-            const data = rawData[track];
-            let row = `<tr>
-                <td class="track-name-cell">
-                    <strong>${track}</strong>
-                </td>`;
-            
-            // 2021
-            data[2021].forEach(v => row += `<td>${v}</td>`);
-            // 2022
-            data[2022].forEach(v => row += `<td>${v}</td>`);
-            // 2023
-            data[2023].forEach(v => row += `<td>${v}</td>`);
-
-            // Total with bar
-            const pct = (total / maxTotal) * 100;
-            row += `<td>
-                <div style="display:flex; align-items:center; gap:8px;">
-                    <span>${total}</span>
-                    <div class="bar-cell" style="width:60px;"><div class="bar-fill" style="width:${pct}%"></div></div>
-                </div>
-            </td>`;
-            
-            row += '</tr>';
-            bodyHTML += row;
-        });
-
-        // Grand Total Row
-        let grandTotal = processed.totals.reduce((a,b)=>a+b,0);
-        let footerRow = `<tr class="total-row"><td>ВСЕГО</td>`;
-        processed.totals.forEach(t => footerRow += `<td>${t}</td>`);
-        footerRow += `<td>${grandTotal.toLocaleString()}</td></tr>`;
-        
-        tbody.innerHTML = bodyHTML + footerRow;
+    function resetData() {
+        updateChart('line');
     }
 
-    // Start
-    initDashboard();
-
+    // Initialize
+    window.onload = () => {
+        const data = processData();
+        updateStats(data);
+        renderTable(data);
+        updateChart('line');
+    };
 </script>
+
 </body>
 </html>

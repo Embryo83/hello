@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>String Theory - Listening Statistics</title>
+    <title>String Theory - Статистика прослушиваний</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
@@ -17,7 +17,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
             margin: 0;
@@ -33,8 +33,8 @@
         header {
             text-align: center;
             margin-bottom: 40px;
+            border-bottom: 2px solid var(--accent);
             padding-bottom: 20px;
-            border-bottom: 1px solid var(--border);
         }
 
         h1 {
@@ -46,59 +46,30 @@
         }
 
         h2 {
-            font-size: 1.2rem;
             color: var(--text-secondary);
-            margin-top: 5px;
-            font-weight: 400;
+            font-weight: 300;
+            margin-top: 10px;
         }
 
-        /* Controls */
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-
-        button, select {
-            background-color: var(--card-bg);
-            color: var(--text-main);
-            border: 1px solid var(--border);
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        button:hover, select:hover {
-            border-color: var(--accent);
-            background-color: #2a2a2a;
-        }
-
-        button.active {
-            background-color: var(--accent);
-            color: #000;
-            border-color: var(--accent);
-            font-weight: bold;
-        }
-
-        /* Stats Cards Grid */
+        /* Stats Cards */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
 
         .stat-card {
             background-color: var(--card-bg);
             padding: 20px;
-            border-radius: 8px;
+            border-radius: 12px;
             text-align: center;
-            border: 1px solid var(--border);
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
         }
 
         .stat-value {
@@ -110,44 +81,43 @@
         }
 
         .stat-label {
+            color: var(--text-secondary);
             font-size: 0.9rem;
-            color: var(--text-secondary);
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
-        /* Yearly Stats Section */
-        .yearly-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        /* Controls */
+        .controls {
+            display: flex;
+            justify-content: center;
             gap: 15px;
-            margin-bottom: 40px;
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-        }
-        
-        .year-item {
-            text-align: center;
-        }
-        .year-val {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #fff;
-        }
-        .year-label {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
+            margin-bottom: 30px;
+            flex-wrap: wrap;
         }
 
-        /* Charts Container */
+        button {
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        button:hover, button.active {
+            background-color: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
+
+        /* Charts Section */
         .chart-container {
             background-color: var(--card-bg);
             padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 40px;
             position: relative;
             height: 400px;
             width: 100%;
@@ -157,22 +127,21 @@
         .track-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 15px;
         }
 
         .track-item {
-            display: flex;
-            align-items: center;
             background-color: var(--card-bg);
             padding: 15px;
-            border-radius: 6px;
-            border: 1px solid var(--border);
-            transition: transform 0.2s;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: background-color 0.2s;
         }
 
         .track-item:hover {
-            transform: translateX(5px);
-            border-color: var(--accent);
+            background-color: #2a2a2a;
         }
 
         .track-rank {
@@ -183,43 +152,71 @@
 
         .track-info {
             flex-grow: 1;
-            padding-right: 20px;
+            min-width: 0; /* Fix text overflow */
         }
 
         .track-name {
-            font-weight: bold;
+            font-weight: 600;
             display: block;
             margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        .track-count {
+        .track-stats {
             font-size: 0.85rem;
             color: var(--text-secondary);
         }
 
-        .track-bar-bg {
-            width: 150px;
-            height: 8px;
+        .bar-container {
+            flex-grow: 1;
+            height: 10px;
             background-color: #333;
-            border-radius: 4px;
+            border-radius: 5px;
             overflow: hidden;
-            flex-shrink: 0;
+            max-width: 300px;
         }
 
-        .track-bar-fill {
+        .bar-fill {
             height: 100%;
             background-color: var(--accent);
-            border-radius: 4px;
+            border-radius: 5px;
+            width: 0%;
+            transition: width 1s ease-out;
         }
 
+        .track-total {
+            font-weight: bold;
+            min-width: 60px;
+            text-align: right;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
             .chart-container {
                 height: 300px;
             }
-            .track-bar-bg {
-                width: 80px;
+            .bar-container {
+                max-width: 100px;
             }
-            h1 { font-size: 1.8rem; }
+        }
+        
+        .year-selector {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .year-btn-group {
+            display: inline-flex;
+            gap: 10px;
+            background: var(--card-bg);
+            padding: 5px;
+            border-radius: 30px;
+            border: 1px solid var(--border);
         }
     </style>
 </head>
@@ -228,20 +225,21 @@
 <div class="container">
     <header>
         <h1>String Theory</h1>
-        <h2>Listening Statistics (2021–2024)</h2>
+        <h2>Статистика прослушиваний альбома</h2>
     </header>
 
-    <div class="controls">
-        <button onclick="setChartType('line')" id="btn-line" class="active">Динамика</button>
-        <button onclick="setChartType('bar')" id="btn-bar">Столбцы</button>
-        <select id="trackSelect" onchange="updateChart()">
-            <option value="all">Все треки (Топ-5)</option>
-            <!-- Options generated by JS -->
-        </select>
-        <button onclick="resetView()">Сброс</button>
+    <!-- Year Selector -->
+    <div class="year-selector">
+        <div class="year-btn-group" id="yearButtons">
+            <button onclick="setYear('all')" class="active">Все время</button>
+            <button onclick="setYear('2021')">2021</button>
+            <button onclick="setYear('2022')">2022</button>
+            <button onclick="setYear('2023')">2023</button>
+            <button onclick="setYear('2024')">2024</button>
+            <button onclick="setYear('2025')">2025</button>
+        </div>
     </div>
 
-    <!-- Main Stats Cards -->
     <div class="stats-grid">
         <div class="stat-card">
             <span class="stat-value" id="totalPlays">0</span>
@@ -249,241 +247,239 @@
         </div>
         <div class="stat-card">
             <span class="stat-value" id="topTrackName">-</span>
-            <span class="stat-label">Лидер</span>
+            <span class="stat-label">Лидер чарта</span>
         </div>
         <div class="stat-card">
             <span class="stat-value" id="peakMonth">-</span>
             <span class="stat-label">Пиковый месяц</span>
         </div>
         <div class="stat-card">
-            <span class="stat-value" id="totalTracks">0</span>
-            <span class="stat-label">Треков в альбоме</span>
+            <span class="stat-value" id="avgPerTrack">0</span>
+            <span class="stat-label">Среднее на трек</span>
         </div>
     </div>
 
-    <!-- Yearly Breakdown -->
-    <div class="yearly-stats">
-        <div class="year-item">
-            <div class="year-val" id="y2021">0</div>
-            <div class="year-label">2021</div>
-        </div>
-        <div class="year-item">
-            <div class="year-val" id="y2022">0</div>
-            <div class="year-label">2022</div>
-        </div>
-        <div class="year-item">
-            <div class="year-val" id="y2023">0</div>
-            <div class="year-label">2023</div>
-        </div>
-        <div class="year-item">
-            <div class="year-val" id="y2024">0</div>
-            <div class="year-label">2024</div>
-        </div>
+    <div class="controls">
+        <button onclick="updateChartType('line')" class="active" id="btnLine">Динамика</button>
+        <button onclick="updateChartType('bar')" id="btnBar">Столбцы</button>
+        <button onclick="sortTracks('desc')" id="btnSortDesc">По убыванию</button>
+        <button onclick="sortTracks('asc')" id="btnSortAsc">По возрастанию</button>
     </div>
 
-    <!-- Chart -->
     <div class="chart-container">
         <canvas id="mainChart"></canvas>
     </div>
 
-    <!-- Track List -->
-    <h3 style="margin-bottom: 15px; color: var(--text-secondary);">Рейтинг треков</h3>
-    <div class="track-list" id="trackListContainer">
-        <!-- Generated by JS -->
+    <h3 style="margin-bottom: 20px; color: var(--text-secondary);">Топ треков</h3>
+    <div class="track-list" id="trackList">
+        <!-- Tracks will be injected here -->
     </div>
 </div>
 
 <script>
-    // --- DATA ---
-    // Format: [Jun, Jul, Aug, Sep, Oct, Nov, Dec, Jan...Dec (2022), Jan...Dec (2023), Jan...Dec (2024)]
-    // Note: 2021 starts from June (index 0-6 are Jun-Dec 2021). 
-    // To simplify logic, we will map months to a continuous timeline or specific years.
-    
-    const labels = [
-        '06.21','07.21','08.21','09.21','10.21','11.21','12.21',
-        '01.22','02.22','03.22','04.22','05.22','06.22','07.22','08.22','09.22','10.22','11.22','12.22',
-        '01.23','02.23','03.23','04.23','05.23','06.23','07.23','08.23','09.23','10.23','11.23','12.23',
-        '01.24','02.24','03.24','04.24','05.24','06.24','07.24','08.24','09.24','10.24','11.24','12.24'
-    ];
-
+    // Data Structure
     const rawData = {
-        "250 kmh": [24,6,5,3,2,0,0, 6,3,1,1,4,2,1,4,5,0,4,2, 4,1,4,5,5,4,4,6,3,2,4,2, 1,1,1,0,1,5,8,6,8,8,25,21],
-        "A Land of Milk": [27,4,5,0,0,2,0, 0,1,1,1,0,0,2,1,2,0,2,2, 3,1,1,0,1,2,0,0,0,1,1,0, 0,21,2,0,0,0,0,0,1,1,0,1],
-        "Moonpath": [61,21,7,0,0,1,3, 1,2,3,3,2,10,1,2,3,4,0,2, 3,2,1,2,2,1,0,0,1,2,0,0, 1,1,2,2,3,0,0,0,2,1,1,2],
-        "Overclean": [53,27,22,9,4,3,5, 2,5,2,1,0,0,2,2,7,2,0,3, 1,2,0,2,1,0,0,1,1,3,1,1, 0,2,1,0,0,1,0,3,2,0,1,2],
-        "One Day Closer": [298,108,14,5,2,9,8, 6,4,4,3,3,4,0,4,6,2,4,3, 1,3,1,3,4,3,1,2,4,2,0,0, 1,0,2,1,3,0,0,3,8,4,1,3],
-        "At Night": [28,5,7,4,0,2,1, 0,2,3,2,0,0,0,1,1,0,2,1, 1,1,2,0,1,0,0,0,0,1,0,0, 0,0,0,0,0,0,0,0,2,0,0,1],
-        "The Last in the World": [26,9,7,1,3,6,11, 20,2,2,2,0,0,1,3,2,4,1,1, 3,2,0,1,0,1,0,1,1,1,0,0, 2,1,0,2,0,0,0,0,1,1,1,0],
-        "Trees Lost Their Burning Leaves": [39,7,8,1,0,3,1, 0,3,2,1,2,2,1,4,3,0,4,0, 3,2,1,0,2,1,1,0,0,1,0,0, 0,0,0,1,1,0,0,1,1,0,1,0],
-        "Tears Were Falling from the Trees": [94,99,58,52,41,68,93, 102,158,95,56,127,123,152,154,85,33,29,39, 35,28,44,74,72,14,28,15,13,15,15,30, 20,10,26,25,12,11,10,12,3,12,8,4],
-        "Sex": [171,43,46,98,29,82,17, 46,7,13,10,13,14,28,12,5,6,8,9, 7,3,5,5,4,9,5,7,2,5,6,0, 1,6,6,7,2,1,1,9,4,3,2,2],
-        "When There’s Light": [29,10,7,2,1,2,2, 0,1,0,1,0,0,1,1,3,1,0,1, 3,1,3,1,0,4,0,0,2,3,2,2, 0,1,0,0,0,2,0,0,1,0,1,1],
-        "Come To You": [79,16,13,6,2,2,4, 1,1,0,3,2,2,1,2,2,0,1,2, 3,3,2,5,4,1,0,1,0,1,2,1, 2,0,1,2,0,1,2,3,4,5,4,1],
-        "Event Horizon": [29,5,7,2,0,4,0, 0,0,0,3,0,0,0,2,1,2,2,1, 2,1,0,0,2,1,1,0,0,1,0,0, 1,0,0,0,0,0,0,2,3,0,0,2],
-        "We Are Burning": [27,7,7,2,0,2,0, 2,3,3,3,0,0,0,2,1,3,8,7, 6,4,2,9,4,1,6,4,2,2,12,7, 8,3,3,10,13,5,6,12,8,14,32,24],
-        "With You By My Side": [23,4,12,2,0,0,0, 0,3,9,4,2,2,3,11,1,1,2,3, 3,2,4,2,0,2,0,1,1,1,2,1, 3,0,0,0,0,4,0,0,5,1,0,1]
+        tracks: [
+            "250 kmh", "A Land of Milk", "Moonpath", "Overclean", "One Day Closer", 
+            "At Night", "The Last in the World", "Trees Lost Their Burning Leaves", 
+            "Tears Were Falling from the Trees", "Sex", "When There’s Light", 
+            "Come To You", "Event Horizon", "We Are Burning", "With You By My Side"
+        ],
+        years: {
+            "2021": {
+                months: ["06", "07", "08", "09", "10", "11", "12"],
+                data: [
+                    [24, 6, 5, 3, 2, 0, 0], // 250 kmh
+                    [27, 4, 5, 0, 0, 2, 0], // A Land of Milk
+                    [61, 21, 7, 0, 0, 1, 3], // Moonpath
+                    [53, 27, 22, 9, 4, 3, 5], // Overclean
+                    [298, 108, 14, 5, 2, 9, 8], // One Day Closer
+                    [28, 5, 7, 4, 0, 2, 1], // At Night
+                    [26, 9, 7, 1, 3, 6, 11], // The Last in the World
+                    [39, 7, 8, 1, 0, 3, 1], // Trees Lost...
+                    [94, 99, 58, 52, 41, 68, 93], // Tears...
+                    [171, 43, 46, 98, 29, 82, 17], // Sex
+                    [29, 10, 7, 2, 1, 2, 2], // When There's Light
+                    [79, 16, 13, 6, 2, 2, 4], // Come To You
+                    [29, 5, 7, 2, 0, 4, 0], // Event Horizon
+                    [27, 7, 7, 2, 0, 2, 0], // We Are Burning
+                    [23, 4, 12, 2, 0, 0, 0]  // With You...
+                ]
+            },
+            "2022": {
+                months: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
+                data: [
+                    [6, 3, 1, 1, 4, 2, 1, 4, 5, 0, 4, 2],
+                    [0, 1, 1, 1, 0, 0, 2, 1, 2, 0, 2, 2],
+                    [1, 2, 3, 3, 2, 10, 1, 2, 3, 4, 0, 2],
+                    [2, 5, 2, 1, 0, 0, 2, 2, 7, 2, 0, 3],
+                    [6, 4, 4, 3, 3, 4, 0, 4, 6, 2, 4, 3],
+                    [0, 2, 3, 2, 0, 0, 0, 1, 1, 0, 2, 1],
+                    [20, 2, 2, 2, 0, 0, 1, 3, 2, 4, 1, 1],
+                    [0, 3, 2, 1, 2, 2, 1, 4, 3, 0, 4, 0],
+                    [102, 158, 95, 56, 127, 123, 152, 154, 85, 33, 29, 39],
+                    [46, 7, 13, 10, 13, 14, 28, 12, 5, 6, 8, 9],
+                    [0, 1, 0, 1, 0, 0, 1, 1, 3, 1, 0, 1],
+                    [1, 1, 0, 3, 2, 2, 1, 2, 2, 0, 1, 2],
+                    [0, 0, 0, 3, 0, 0, 0, 2, 1, 2, 2, 1],
+                    [2, 3, 3, 3, 0, 0, 0, 2, 1, 3, 8, 7],
+                    [0, 3, 9, 4, 2, 2, 3, 11, 1, 1, 2, 3]
+                ]
+            },
+            "2023": {
+                months: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
+                data: [
+                    [4, 1, 4, 5, 5, 4, 4, 6, 3, 2, 4, 2],
+                    [3, 1, 1, 0, 1, 2, 0, 0, 0, 1, 1, 0],
+                    [3, 2, 1, 2, 2, 1, 0, 0, 1, 2, 0, 0],
+                    [1, 2, 0, 2, 1, 0, 0, 1, 1, 3, 1, 1],
+                    [1, 3, 1, 3, 4, 3, 1, 2, 4, 2, 0, 0],
+                    [1, 1, 2, 0, 1, 0, 0, 0, 0, 1, 0, 0],
+                    [3, 2, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0],
+                    [3, 2, 1, 0, 2, 1, 1, 0, 0, 1, 0, 0],
+                    [35, 28, 44, 74, 72, 14, 28, 15, 13, 15, 15, 30],
+                    [7, 3, 5, 5, 4, 9, 5, 7, 2, 5, 6, 0],
+                    [3, 1, 3, 1, 0, 4, 0, 0, 2, 3, 2, 2],
+                    [3, 3, 2, 5, 4, 1, 0, 1, 0, 1, 2, 1],
+                    [2, 1, 0, 0, 2, 1, 1, 0, 0, 1, 0, 0],
+                    [6, 4, 2, 9, 4, 1, 6, 4, 2, 2, 12, 7],
+                    [3, 2, 4, 2, 0, 2, 0, 1, 1, 1, 2, 1]
+                ]
+            },
+            "2024": {
+                months: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
+                data: [
+                    [1, 1, 1, 0, 1, 5, 8, 6, 8, 8, 25, 21],
+                    [0, 21, 2, 0, 0, 0, 0, 0, 1, 1, 0, 1],
+                    [1, 1, 2, 2, 3, 0, 0, 0, 2, 1, 1, 2],
+                    [0, 2, 1, 0, 0, 1, 0, 3, 2, 0, 1, 2],
+                    [1, 0, 2, 1, 3, 0, 0, 3, 8, 4, 1, 3],
+                    [0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 1],
+                    [2, 1, 0, 2, 0, 0, 0, 0, 1, 1, 1, 0],
+                    [0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0],
+                    [20, 10, 26, 25, 12, 11, 10, 12, 3, 12, 8, 4],
+                    [1, 6, 6, 7, 2, 1, 1, 9, 4, 3, 2, 2],
+                    [0, 1, 0, 0, 0, 2, 0, 0, 1, 0, 1, 1],
+                    [2, 0, 1, 2, 0, 1, 2, 3, 4, 5, 4, 1],
+                    [1, 0, 0, 0, 0, 0, 0, 2, 3, 0, 0, 2],
+                    [8, 3, 3, 10, 13, 5, 6, 12, 8, 14, 32, 24],
+                    [3, 0, 0, 0, 0, 4, 0, 0, 5, 1, 0, 1]
+                ]
+            },
+            "2025": {
+                months: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
+                data: [
+                    [22, 13, 16, 10, 2, 5, 0, 1, 1, 2, 0, 0],
+                    [0, 0, 0, 0, 3, 2, 0, 0, 0, 0, 1, 0],
+                    [0, 1, 1, 8, 21, 8, 1, 1, 1, 1, 1, 2],
+                    [0, 0, 0, 0, 8, 0, 73, 2, 2, 0, 1, 0],
+                    [1, 0, 2, 0, 1, 1, 5, 0, 0, 0, 3, 0],
+                    [1, 2, 1, 6, 17, 5, 0, 0, 0, 0, 4, 0],
+                    [0, 1, 0, 0, 14, 8, 0, 0, 0, 0, 3, 6],
+                    [1, 2, 0, 7, 12, 2, 2, 4, 0, 0, 0, 2],
+                    [4, 6, 10, 12, 9, 3, 5, 1, 4, 7, 6, 5],
+                    [1, 0, 2, 1, 6, 8, 3, 2, 1, 1, 1, 2],
+                    [0, 0, 0, 6, 31, 25, 3, 0, 2, 1, 0, 5],
+                    [1, 7, 11, 1, 11, 10, 6, 2, 1, 8, 3, 3],
+                    [1, 0, 2, 11, 40, 23, 5, 0, 3, 4, 4, 8],
+                    [11, 32, 36, 22, 18, 31, 43, 1, 0, 1, 0, 0],
+                    [1, 0, 0, 1, 8, 1, 4, 1, 0, 0, 1, 1]
+                ]
+            }
+        }
     };
 
-    const trackNames = Object.keys(rawData);
-    let chartInstance = null;
+    let currentYear = 'all';
     let currentChartType = 'line';
+    let chartInstance = null;
+    let sortDirection = 'desc';
 
-    // --- INITIALIZATION ---
-    function init() {
-        populateSelect();
-        calculateStats();
-        renderTrackList();
-        updateChart();
-    }
-
-    function populateSelect() {
-        const select = document.getElementById('trackSelect');
-        trackNames.forEach(name => {
-            const opt = document.createElement('option');
-            opt.value = name;
-            opt.textContent = name;
-            select.appendChild(opt);
-        });
-    }
-
-    function calculateStats() {
-        let total = 0;
-        let maxTrack = { name: '', count: 0 };
-        let monthlyTotals = new Array(labels.length).fill(0);
-        
-        // Yearly totals
-        let y2021 = 0; // Indices 0-6
-        let y2022 = 0; // Indices 7-18
-        let y2023 = 0; // Indices 19-30
-        let y2024 = 0; // Indices 31-42
-
-        trackNames.forEach(name => {
-            const data = rawData[name];
-            const trackSum = data.reduce((a, b) => a + b, 0);
-            total += trackSum;
-
-            if (trackSum > maxTrack.count) {
-                maxTrack = { name, count: trackSum };
-            }
-
-            data.forEach((val, idx) => {
-                monthlyTotals[idx] += val;
-                
-                // Yearly accumulation
-                if (idx >= 0 && idx <= 6) y2021 += val;
-                else if (idx >= 7 && idx <= 18) y2022 += val;
-                else if (idx >= 19 && idx <= 30) y2023 += val;
-                else if (idx >= 31 && idx <= 42) y2024 += val;
-            });
-        });
-
-        // Find peak month
-        const peakIdx = monthlyTotals.indexOf(Math.max(...monthlyTotals));
-        const peakLabel = labels[peakIdx];
-
-        // Update DOM
-        document.getElementById('totalPlays').textContent = total.toLocaleString();
-        document.getElementById('topTrackName').textContent = maxTrack.name;
-        document.getElementById('peakMonth').textContent = peakLabel;
-        document.getElementById('totalTracks').textContent = trackNames.length;
-
-        document.getElementById('y2021').textContent = y2021.toLocaleString();
-        document.getElementById('y2022').textContent = y2022.toLocaleString();
-        document.getElementById('y2023').textContent = y2023.toLocaleString();
-        document.getElementById('y2024').textContent = y2024.toLocaleString();
-    }
-
-    function renderTrackList() {
-        const container = document.getElementById('trackListContainer');
-        container.innerHTML = '';
-
-        // Calculate totals and sort
-        const sortedTracks = trackNames.map(name => {
-            return {
-                name: name,
-                total: rawData[name].reduce((a, b) => a + b, 0)
-            };
-        }).sort((a, b) => b.total - a.total);
-
-        const maxVal = sortedTracks[0].total;
-
-        sortedTracks.forEach((track, index) => {
-            const percent = (track.total / maxVal) * 100;
+    function processData(year) {
+        if (year === 'all') {
+            const allMonths = [];
+            const allData = rawData.tracks.map(() => []);
             
-            const item = document.createElement('div');
-            item.className = 'track-item';
-            item.innerHTML = `
-                <div class="track-rank">#${index + 1}</div>
-                <div class="track-info">
-                    <span class="track-name">${track.name}</span>
-                    <span class="track-count">${track.total.toLocaleString()} plays</span>
-                </div>
-                <div class="track-bar-bg">
-                    <div class="track-bar-fill" style="width: ${percent}%"></div>
-                </div>
-            `;
-            container.appendChild(item);
+            // Collect all months and align data
+            Object.keys(rawData.years).forEach(y => {
+                const yData = rawData.years[y];
+                yData.months.forEach((m, idx) => {
+                    allMonths.push(`${y}-${m}`);
+                    yData.data.forEach((trackRow, tIdx) => {
+                        allData[tIdx].push(trackRow[idx]);
+                    });
+                });
+            });
+
+            return { months: allMonths, data: allData };
+        } else {
+            const yData = rawData.years[year];
+            return { months: [...yData.months], data: yData.data.map(row => [...row]) };
+        }
+    }
+
+    function calculateStats(processedData) {
+        const totals = processedData.data.map(row => row.reduce((a, b) => a + b, 0));
+        const grandTotal = totals.reduce((a, b) => a + b, 0);
+        
+        // Top Track
+        const maxVal = Math.max(...totals);
+        const topIdx = totals.indexOf(maxVal);
+        const topTrack = rawData.tracks[topIdx];
+
+        // Peak Month
+        const monthSums = new Array(processedData.months.length).fill(0);
+        processedData.data.forEach(row => {
+            row.forEach((val, idx) => monthSums[idx] += val);
         });
+        const peakVal = Math.max(...monthSums);
+        const peakIdx = monthSums.indexOf(peakVal);
+        const peakLabel = processedData.months[peakIdx];
+
+        // Avg
+        const avg = Math.round(grandTotal / rawData.tracks.length);
+
+        return { grandTotal, topTrack, peakLabel, avg, totals };
     }
 
-    function setChartType(type) {
-        currentChartType = type;
-        document.getElementById('btn-line').className = type === 'line' ? 'active' : '';
-        document.getElementById('btn-bar').className = type === 'bar' ? 'active' : '';
-        updateChart();
+    function updateDashboard() {
+        const processed = processData(currentYear);
+        const stats = calculateStats(processed);
+
+        // Update Cards
+        document.getElementById('totalPlays').textContent = stats.grandTotal.toLocaleString();
+        document.getElementById('topTrackName').textContent = stats.topTrack;
+        document.getElementById('peakMonth').textContent = stats.peakLabel;
+        document.getElementById('avgPerTrack').textContent = stats.avg.toLocaleString();
+
+        // Update Chart
+        updateChart(processed, stats.totals);
+
+        // Update List
+        updateTrackList(stats.totals);
     }
 
-    function updateChart() {
+    function updateChart(processed, totals) {
         const ctx = document.getElementById('mainChart').getContext('2d');
-        const selected = document.getElementById('trackSelect').value;
         
         if (chartInstance) {
             chartInstance.destroy();
         }
 
-        let datasets = [];
-        let dataToShow = [];
-        let labelToShow = '';
-
-        const colors = [
-            '#bb86fc', '#03dac6', '#cf6679', '#3700b3', '#018786', 
-            '#ff5252', '#ff4081', '#7c4dff', '#536dfe', '#448aff',
-            '#18ffff', '#64ffda', '#b2ff59', '#eeff41', '#ffff00'
-        ];
-
-        if (selected === 'all') {
-            // Show Top 5
-            const sorted = trackNames.map(name => ({
-                name, total: rawData[name].reduce((a,b)=>a+b,0)
-            })).sort((a,b) => b.total - a.total).slice(0, 5);
-
-            sorted.forEach((t, i) => {
-                datasets.push({
-                    label: t.name,
-                    data: rawData[t.name],
-                    borderColor: colors[i % colors.length],
-                    backgroundColor: colors[i % colors.length] + '40',
-                    borderWidth: 2,
-                    fill: false,
-                    tension: 0.3
-                });
-            });
-        } else {
-            datasets.push({
-                label: selected,
-                data: rawData[selected],
-                borderColor: '#bb86fc',
-                backgroundColor: '#bb86fc40',
-                borderWidth: 2,
-                fill: true,
-                tension: 0.3
-            });
-        }
+        const datasets = rawData.tracks.map((track, idx) => ({
+            label: track,
+            data: processed.data[idx],
+            borderColor: `hsl(${idx * 24}, 70%, 60%)`,
+            backgroundColor: `hsla(${idx * 24}, 70%, 60%, 0.2)`,
+            borderWidth: 2,
+            fill: currentChartType === 'line' ? false : true,
+            tension: 0.3,
+            pointRadius: currentChartType === 'line' ? 2 : 0
+        }));
 
         chartInstance = new Chart(ctx, {
             type: currentChartType,
             data: {
-                labels: labels,
+                labels: processed.months,
                 datasets: datasets
             },
             options: {
@@ -495,21 +491,20 @@
                 },
                 plugins: {
                     legend: {
-                        labels: { color: '#e0e0e0' }
+                        display: false // Hide legend for cleaner look, use tooltip instead
                     },
                     tooltip: {
-                        mode: 'index',
-                        intersect: false
+                        enabled: true
                     }
                 },
                 scales: {
                     x: {
-                        ticks: { color: '#a0a0a0', maxRotation: 45, minRotation: 45 },
-                        grid: { color: '#333' }
+                        grid: { color: '#333' },
+                        ticks: { color: '#a0a0a0', maxRotation: 45 }
                     },
                     y: {
-                        ticks: { color: '#a0a0a0' },
                         grid: { color: '#333' },
+                        ticks: { color: '#a0a0a0' },
                         beginAtZero: true
                     }
                 }
@@ -517,14 +512,77 @@
         });
     }
 
-    function resetView() {
-        document.getElementById('trackSelect').value = 'all';
-        setChartType('line');
+    function updateTrackList(totals) {
+        const listContainer = document.getElementById('trackList');
+        listContainer.innerHTML = '';
+
+        // Create array of objects to sort
+        let trackStats = rawData.tracks.map((name, idx) => ({
+            name: name,
+            total: totals[idx],
+            index: idx
+        }));
+
+        // Sort
+        trackStats.sort((a, b) => sortDirection === 'desc' ? b.total - a.total : a.total - b.total);
+
+        const maxTotal = Math.max(...totals);
+
+        trackStats.forEach((item, rank) => {
+            const percent = (item.total / maxTotal) * 100;
+            
+            const div = document.createElement('div');
+            div.className = 'track-item';
+            div.innerHTML = `
+                <div class="track-rank">#${rank + 1}</div>
+                <div class="track-info">
+                    <span class="track-name">${item.name}</span>
+                    <span class="track-stats">Прослушиваний: ${item.total}</span>
+                </div>
+                <div class="bar-container">
+                    <div class="bar-fill" style="width: ${percent}%"></div>
+                </div>
+                <div class="track-total">${item.total}</div>
+            `;
+            listContainer.appendChild(div);
+        });
     }
 
-    // Start
-    init();
+    function setYear(year) {
+        currentYear = year;
+        
+        // Update buttons
+        document.querySelectorAll('#yearButtons button').forEach(btn => {
+            btn.classList.remove('active');
+            if(btn.textContent.includes(year === 'all' ? 'Все' : year)) {
+                btn.classList.add('active');
+            }
+        });
+
+        updateDashboard();
+    }
+
+    function updateChartType(type) {
+        currentChartType = type;
+        document.getElementById('btnLine').classList.toggle('active', type === 'line');
+        document.getElementById('btnBar').classList.toggle('active', type === 'bar');
+        updateDashboard();
+    }
+
+    function sortTracks(dir) {
+        sortDirection = dir;
+        document.getElementById('btnSortDesc').classList.toggle('active', dir === 'desc');
+        document.getElementById('btnSortAsc').classList.toggle('active', dir === 'asc');
+        // Re-render list only (stats and chart don't change order visually in this simple version, but list does)
+        const processed = processData(currentYear);
+        const stats = calculateStats(processed);
+        updateTrackList(stats.totals);
+    }
+
+    // Initialize
+    updateDashboard();
 
 </script>
+
 </body>
 </html>

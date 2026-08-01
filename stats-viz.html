@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STRING THEORY - Статистика прослушиваний</title>
+    <title>String Theory - Статистика Прослушиваний</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --bg-color: #121212;
-            --card-bg: #1e1e1e;
-            --text-primary: #ffffff;
-            --text-secondary: #b0b0b0;
-            --accent: #bb86fc;
-            --accent-hover: #9955e8;
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent: #38bdf8;
+            --accent-hover: #0ea5e9;
+            --border: #334155;
         }
 
         body {
@@ -32,50 +33,24 @@
         header {
             text-align: center;
             margin-bottom: 40px;
-            padding: 20px;
-            border-bottom: 1px solid #333;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 20px;
         }
 
         h1 {
-            color: var(--accent);
-            margin-bottom: 10px;
             font-size: 2.5rem;
+            margin: 0;
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .controls {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-bottom: 30px;
-            background: var(--card-bg);
-            padding: 15px;
-            border-radius: 8px;
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
         }
 
-        button {
-            background-color: var(--accent);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background 0.3s;
-        }
-
-        button:hover {
-            background-color: var(--accent-hover);
-        }
-
-        select {
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #444;
-            background: #2c2c2c;
-            color: white;
-        }
-
+        /* Stats Cards */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -84,93 +59,144 @@
         }
 
         .stat-card {
-            background: var(--card-bg);
+            background-color: var(--card-bg);
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 12px;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
         }
 
         .stat-value {
             font-size: 2rem;
             font-weight: bold;
             color: var(--accent);
+            display: block;
         }
 
         .stat-label {
             color: var(--text-secondary);
             font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .chart-container {
-            background: var(--card-bg);
+        /* Charts Section */
+        .charts-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @media (min-width: 900px) {
+            .charts-container {
+                grid-template-columns: 2fr 1fr;
+            }
+        }
+
+        .chart-box {
+            background-color: var(--card-bg);
             padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            position: relative;
             height: 400px;
-            position: relative;
         }
 
-        .track-list {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 10px;
-        }
-
-        .track-item {
+        .controls {
             display: flex;
-            align-items: center;
+            gap: 10px;
             margin-bottom: 15px;
-            padding: 10px;
-            border-bottom: 1px solid #333;
+            flex-wrap: wrap;
         }
 
-        .track-name {
-            width: 200px;
-            font-weight: bold;
-            z-index: 2;
+        button {
+            background-color: var(--border);
+            color: var(--text-primary);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
         }
 
-        .bar-container {
-            flex-grow: 1;
-            background: #333;
-            height: 20px;
-            border-radius: 10px;
+        button:hover {
+            background-color: var(--accent);
+            color: var(--bg-color);
+        }
+
+        button.active {
+            background-color: var(--accent);
+            color: var(--bg-color);
+        }
+
+        /* Table */
+        .table-container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        th:hover {
+            color: var(--accent);
+        }
+
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .bar-cell {
+            width: 150px;
+        }
+
+        .progress-bg {
+            background-color: var(--border);
+            height: 8px;
+            border-radius: 4px;
             overflow: hidden;
-            margin: 0 15px;
-            position: relative;
+            margin-top: 5px;
         }
 
-        .bar-fill {
+        .progress-fill {
+            background-color: var(--accent);
             height: 100%;
-            background: linear-gradient(90deg, var(--accent), #03dac6);
-            width: 0%;
-            transition: width 1s ease-in-out;
+            border-radius: 4px;
+            transition: width 0.5s ease;
         }
 
-        .track-count {
-            width: 60px;
-            text-align: right;
+        .total-row {
             font-weight: bold;
-        }
-
-        @media (max-width: 768px) {
-            .track-item {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .track-name {
-                width: 100%;
-                margin-bottom: 5px;
-            }
-            .bar-container {
-                width: 100%;
-                margin: 5px 0;
-            }
-            .track-count {
-                width: 100%;
-                text-align: left;
-            }
+            color: var(--accent);
+            border-top: 2px solid var(--border);
         }
     </style>
 </head>
@@ -178,50 +204,78 @@
 
 <div class="container">
     <header>
-        <h1>STRING THEORY</h1>
-        <p>Динамическая статистика прослушиваний альбома (Июнь - Декабрь 2021)</p>
+        <h1>String Theory</h1>
+        <div class="subtitle">Динамическая статистика прослушиваний альбома (2021)</div>
     </header>
 
-    <div class="controls">
-        <button onclick="renderChart('line')">Динамика по месяцам</button>
-        <button onclick="renderChart('bar')">Сравнение треков (Total)</button>
-        <button onclick="renderChart('doughnut')">Доля в альбоме</button>
-        <select id="sortSelect" onchange="updateData()">
-            <option value="original">Сортировка: По порядку альбома</option>
-            <option value="total-desc">Сортировка: По популярности (убыв.)</option>
-            <option value="total-asc">Сортировка: По популярности (возр.)</option>
-        </select>
-    </div>
-
+    <!-- KPI Cards -->
     <div class="stats-grid">
         <div class="stat-card">
-            <div class="stat-value" id="totalPlays">0</div>
-            <div class="stat-label">Всего прослушиваний</div>
+            <span class="stat-value" id="total-plays">0</span>
+            <span class="stat-label">Всего прослушиваний</span>
         </div>
         <div class="stat-card">
-            <div class="stat-value" id="topTrack">-</div>
-            <div class="stat-label">Самый популярный трек</div>
+            <span class="stat-value" id="track-count">0</span>
+            <span class="stat-label">Треков в альбоме</span>
         </div>
         <div class="stat-card">
-            <div class="stat-value" id="peakMonth">-</div>
-            <div class="stat-label">Пиковый месяц</div>
+            <span class="stat-value" id="top-track">-</span>
+            <span class="stat-label">Лидер по прослушиваниям</span>
         </div>
         <div class="stat-card">
-            <div class="stat-value" id="trackCount">0</div>
-            <div class="stat-label">Треков в альбоме</div>
+            <span class="stat-value" id="peak-month">-</span>
+            <span class="stat-label">Пик активности</span>
         </div>
     </div>
 
-    <div class="chart-container">
-        <canvas id="mainChart"></canvas>
+    <!-- Charts -->
+    <div class="charts-container">
+        <div class="chart-box">
+            <div class="controls">
+                <button onclick="updateChartType('line')" class="active" id="btn-line">Динамика (Line)</button>
+                <button onclick="updateChartType('bar')" id="btn-bar">Столбцы (Bar)</button>
+                <button onclick="toggleStacked()" id="btn-stacked">Нормализовать</button>
+            </div>
+            <canvas id="mainChart"></canvas>
+        </div>
+        <div class="chart-box">
+            <h3 style="margin-top:0; color: var(--text-secondary);">Распределение по трекам</h3>
+            <canvas id="pieChart"></canvas>
+        </div>
     </div>
 
-    <div class="track-list" id="trackList">
-        <!-- Список треков генерируется JS -->
+    <!-- Data Table -->
+    <div class="table-container">
+        <h3 style="margin-top:0; color: var(--text-secondary);">Детальная статистика</h3>
+        <table id="statsTable">
+            <thead>
+                <tr>
+                    <th onclick="sortTable(0)">Трек ↕</th>
+                    <th onclick="sortTable(1)">06.21 ↕</th>
+                    <th onclick="sortTable(2)">07.21 ↕</th>
+                    <th onclick="sortTable(3)">08.21 ↕</th>
+                    <th onclick="sortTable(4)">09.21 ↕</th>
+                    <th onclick="sortTable(5)">10.21 ↕</th>
+                    <th onclick="sortTable(6)">11.21 ↕</th>
+                    <th onclick="sortTable(7)">12.21 ↕</th>
+                    <th onclick="sortTable(8)">TOTAL ↕</th>
+                    <th>Визуализация</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- Rows generated by JS -->
+            </tbody>
+            <tfoot>
+                <tr class="total-row" id="totalRow">
+                    <!-- Total row generated by JS -->
+                </tr>
+            </tfoot>
+        </table>
     </div>
 </div>
 
 <script>
+    // Данные из запроса (STRING THEORY исключен из списка треков, используется как итог)
     const rawData = [
         { name: "250 kmh", data: [24, 6, 5, 3, 2, 0, 0], total: 40 },
         { name: "A Land of Milk", data: [27, 4, 5, 0, 0, 2, 0], total: 38 },
@@ -237,139 +291,227 @@
         { name: "Come To You", data: [79, 16, 13, 6, 2, 2, 4], total: 122 },
         { name: "Event Horizon", data: [29, 5, 7, 2, 0, 4, 0], total: 47 },
         { name: "We Are Burning", data: [27, 7, 7, 2, 0, 2, 0], total: 45 },
-        { name: "With You by My Side", data: [23, 4, 12, 2, 0, 0, 0], total: 41 },
-        { name: "STRING THEORY", data: [1008, 371, 225, 187, 84, 186, 145], total: 2206 }
+        { name: "With You by My Side", data: [23, 4, 12, 2, 0, 0, 0], total: 41 }
     ];
 
-    const months = ['06.2021', '07.2021', '08.2021', '09.2021', '10.2021', '11.2021', '12.2021'];
-    let chartInstance = null;
-    let currentData = [...rawData];
+    const months = ["06.2021", "07.2021", "08.2021", "09.2021", "10.2021", "11.2021", "12.2021"];
+    const albumTotal = 2206; // Из исходных данных
 
-    function init() {
-        updateData();
-        renderSummary();
-        renderChart('line');
-        renderTrackList();
-    }
+    let mainChartInstance = null;
+    let pieChartInstance = null;
+    let isStacked = false;
+    let currentChartType = 'line';
 
-    function updateData() {
-        const sortType = document.getElementById('sortSelect').value;
-        
-        if (sortType === 'total-desc') {
-            currentData.sort((a, b) => b.total - a.total);
-        } else if (sortType === 'total-asc') {
-            currentData.sort((a, b) => a.total - b.total);
-        } else {
-            // Восстанавливаем оригинальный порядок (можно захардкодить индексы, если нужно строго)
-            // Для простоты сортируем по имени или оставляем как есть, если не меняли массив
-            currentData = [...rawData].sort((a,b) => rawData.indexOf(a) - rawData.indexOf(b));
-        }
-        
-        renderSummary();
-        renderChart(document.querySelector('button[onclick*="line"]').classList.contains('active') ? 'line' : 'bar');
-        renderTrackList();
-    }
+    // Инициализация
+    document.addEventListener('DOMContentLoaded', () => {
+        initKPIs();
+        renderTable();
+        initCharts();
+    });
 
-    function renderSummary() {
-        const total = currentData.reduce((sum, track) => sum + track.total, 0);
-        document.getElementById('totalPlays').innerText = total.toLocaleString();
-        document.getElementById('trackCount').innerText = currentData.length;
+    function initKPIs() {
+        document.getElementById('total-plays').innerText = albumTotal.toLocaleString();
+        document.getElementById('track-count').innerText = rawData.length;
 
-        const top = currentData.reduce((prev, current) => (prev.total > current.total) ? prev : current);
-        document.getElementById('topTrack').innerText = top.name;
+        // Top Track
+        const topTrack = rawData.reduce((prev, current) => (prev.total > current.total) ? prev : current);
+        document.getElementById('top-track').innerText = topTrack.name;
 
-        // Поиск пикового месяца
-        let monthSums = new Array(7).fill(0);
-        currentData.forEach(track => {
+        // Peak Month calculation
+        const monthSums = new Array(7).fill(0);
+        rawData.forEach(track => {
             track.data.forEach((val, idx) => monthSums[idx] += val);
         });
         const maxMonthVal = Math.max(...monthSums);
         const maxMonthIdx = monthSums.indexOf(maxMonthVal);
-        document.getElementById('peakMonth').innerText = months[maxMonthIdx];
+        document.getElementById('peak-month').innerText = months[maxMonthIdx];
     }
 
-    function renderChart(type) {
-        const ctx = document.getElementById('mainChart').getContext('2d');
-        
-        if (chartInstance) {
-            chartInstance.destroy();
-        }
+    function renderTable() {
+        const tbody = document.getElementById('tableBody');
+        const maxTotal = Math.max(...rawData.map(t => t.total));
 
-        let labels, datasets;
-
-        if (type === 'line' || type === 'bar') {
-            labels = months;
-            datasets = currentData.map((track, index) => ({
-                label: track.name,
-                data: track.data,
-                borderColor: `hsl(${index * 20}, 70%, 60%)`,
-                backgroundColor: `hsla(${index * 20}, 70%, 60%, 0.2)`,
-                fill: type === 'line',
-                tension: 0.3
-            }));
+        rawData.forEach(track => {
+            const tr = document.createElement('tr');
             
-            // Если бар чарт и много треков, лучше показать только топ-5 или суммарно, 
-            // но оставим как есть для интерактивности (может быть мелко)
-            if (type === 'bar' && currentData.length > 10) {
-                 // Альтернатива для бара: показать Total каждого трека
-                 labels = currentData.map(t => t.name);
-                 datasets = [{
-                    label: 'Всего прослушиваний',
-                    data: currentData.map(t => t.total),
-                    backgroundColor: currentData.map((_, i) => `hsl(${i * 20}, 70%, 60%)`)
-                 }];
-            }
-        } else if (type === 'doughnut') {
-            labels = currentData.map(t => t.name);
-            datasets = [{
-                data: currentData.map(t => t.total),
-                backgroundColor: currentData.map((_, i) => `hsl(${i * 20}, 70%, 60%)`)
-            }];
-        }
+            let cells = `<td>${track.name}</td>`;
+            track.data.forEach(val => cells += `<td>${val}</td>`);
+            cells += `<td><strong>${track.total}</strong></td>`;
+            
+            // Visual bar
+            const percentage = (track.total / maxTotal) * 100;
+            cells += `<td class="bar-cell"><div class="progress-bg"><div class="progress-fill" style="width: ${percentage}%"></div></div></td>`;
+            
+            tr.innerHTML = cells;
+            tbody.appendChild(tr);
+        });
 
-        chartInstance = new Chart(ctx, {
-            type: type === 'doughnut' ? 'doughnut' : (type === 'bar' && currentData.length > 10 ? 'bar' : type),
-            data: { labels, datasets },
+        // Footer Total Row
+        const tfoot = document.getElementById('totalRow');
+        const monthTotals = new Array(7).fill(0);
+        rawData.forEach(track => {
+            track.data.forEach((val, idx) => monthTotals[idx] += val);
+        });
+
+        let footerCells = `<td>TOTAL (Album)</td>`;
+        monthTotals.forEach(val => footerCells += `<td>${val}</td>`);
+        footerCells += `<td>${albumTotal}</td><td></td>`;
+        tfoot.innerHTML = footerCells;
+    }
+
+    function initCharts() {
+        const ctxMain = document.getElementById('mainChart').getContext('2d');
+        const ctxPie = document.getElementById('pieChart').getContext('2d');
+
+        // Main Chart Data Setup
+        const datasets = rawData.map((track, index) => ({
+            label: track.name,
+            data: track.data,
+            borderColor: getColor(index),
+            backgroundColor: getColor(index, 0.2),
+            tension: 0.3,
+            fill: false
+        }));
+
+        // Main Chart
+        mainChartInstance = new Chart(ctxMain, {
+            type: 'line',
+            data: {
+                labels: months,
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                scales: {
+                    y: {
+                        stacked: isStacked,
+                        grid: { color: '#334155' },
+                        ticks: { color: '#94a3b8' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#94a3b8' }
+                    }
+                },
+                plugins: {
+                    legend: { display: false } // Hide legend for cleanliness, use tooltip
+                }
+            }
+        });
+
+        // Pie Chart
+        pieChartInstance = new Chart(ctxPie, {
+            type: 'doughnut',
+            data: {
+                labels: rawData.map(t => t.name),
+                datasets: [{
+                    data: rawData.map(t => t.total),
+                    backgroundColor: rawData.map((_, i) => getColor(i)),
+                    borderWidth: 0
+                }]
+            },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: {
-                        position: type === 'doughnut' ? 'right' : 'top',
-                        labels: { color: '#fff', boxWidth: 10 }
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.raw;
+                            }
+                        }
                     }
-                },
-                scales: type !== 'doughnut' ? {
-                    y: { ticks: { color: '#b0b0b0' }, grid: { color: '#333' } },
-                    x: { ticks: { color: '#b0b0b0' }, grid: { display: false } }
-                } : {}
+                }
             }
         });
     }
 
-    function renderTrackList() {
-        const container = document.getElementById('trackList');
-        container.innerHTML = '<h3>Детальная статистика по трекам</h3>';
+    function updateChartType(type) {
+        currentChartType = type;
+        mainChartInstance.config.type = type;
+        mainChartInstance.update();
         
-        const maxTotal = Math.max(...currentData.map(t => t.total));
-
-        currentData.forEach(track => {
-            const percent = (track.total / maxTotal) * 100;
-            const html = `
-                <div class="track-item">
-                    <div class="track-name">${track.name}</div>
-                    <div class="bar-container">
-                        <div class="bar-fill" style="width: ${percent}%"></div>
-                    </div>
-                    <div class="track-count">${track.total}</div>
-                </div>
-            `;
-            container.innerHTML += html;
-        });
+        document.querySelectorAll('.controls button').forEach(b => b.classList.remove('active'));
+        document.getElementById(`btn-${type}`).classList.add('active');
     }
 
-    // Запуск
-    init();
+    function toggleStacked() {
+        isStacked = !isStacked;
+        mainChartInstance.options.scales.y.stacked = isStacked;
+        mainChartInstance.update();
+        
+        const btn = document.getElementById('btn-stacked');
+        btn.innerText = isStacked ? "Обычный вид" : "Нормализовать (Stacked)";
+        btn.classList.toggle('active');
+    }
+
+    function sortTable(n) {
+        const table = document.getElementById("statsTable");
+        let switching = true, shouldSwitch, dir = "asc", switchcount = 0;
+        
+        while (switching) {
+            switching = false;
+            const rows = table.getElementsByTagName("TR");
+            
+            for (let i = 1; i < (rows.length - 1); i++) { // -1 because of tfoot
+                shouldSwitch = false;
+                const x = rows[i].getElementsByTagName("TD")[n];
+                const y = rows[i + 1].getElementsByTagName("TD")[n];
+                
+                let xContent = x.innerHTML.includes('progress') ? 
+                               parseFloat(x.querySelector('.progress-fill').style.width) : 
+                               (isNaN(parseFloat(x.innerHTML)) ? x.innerHTML.toLowerCase() : parseFloat(x.innerHTML));
+                
+                let yContent = y.innerHTML.includes('progress') ? 
+                               parseFloat(y.querySelector('.progress-fill').style.width) : 
+                               (isNaN(parseFloat(y.innerHTML)) ? y.innerHTML.toLowerCase() : parseFloat(y.innerHTML));
+
+                if (dir === "asc") {
+                    if (xContent > yContent) { shouldSwitch = true; break; }
+                } else if (dir === "desc") {
+                    if (xContent < yContent) { shouldSwitch = true; break; }
+                }
+            }
+            
+            if (shouldSwitch) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                switchcount++;
+            } else {
+                if (switchcount === 0 && dir === "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
+        }
+    }
+
+    function getColor(index, alpha = 1) {
+        const colors = [
+            `rgba(56, 189, 248, ${alpha})`, // Sky
+            `rgba(129, 140, 248, ${alpha})`, // Indigo
+            `rgba(139, 92, 246, ${alpha})`, // Violet
+            `rgba(236, 72, 153, ${alpha})`, // Pink
+            `rgba(244, 63, 94, ${alpha})`, // Rose
+            `rgba(251, 146, 60, ${alpha})`, // Orange
+            `rgba(234, 179, 8, ${alpha})`, // Yellow
+            `rgba(34, 197, 94, ${alpha})`, // Green
+            `rgba(45, 212, 191, ${alpha})`, // Teal
+            `rgba(14, 165, 233, ${alpha})`, // Blue
+            `rgba(168, 85, 247, ${alpha})`, // Purple
+            `rgba(239, 68, 68, ${alpha})`, // Red
+            `rgba(249, 115, 22, ${alpha})`, // Orange Dark
+            `rgba(34, 211, 238, ${alpha})`, // Cyan
+            `rgba(192, 132, 252, ${alpha})` // Lavender
+        ];
+        return colors[index % colors.length];
+    }
 </script>
 
 </body>

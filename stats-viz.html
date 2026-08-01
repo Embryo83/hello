@@ -688,6 +688,9 @@
         if (count >= 1000) {
             return `<span class="star-badge star-gold">🌟 1K</span>`;
         }
+        if (count >= 2000) {
+            return `<span class="star-badge star-gold">🌟 2K</span>`;
+        }
         const starCount = Math.floor(count / 100);
         if (starCount === 0) return '';
         return `<span class="star-badge star-white">${'★'.repeat(starCount)}</span>`;

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STRING THEORY - Статистика прослушиваний</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #bb86fc;
+            --accent-hover: #9955e8;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            border-bottom: 1px solid #333;
+        }
+
+        h1 {
+            color: var(--accent);
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        button {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: var(--accent-hover);
+        }
+
+        select {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #444;
+            background: #2c2c2c;
+            color: white;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .chart-container {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            height: 400px;
+            position: relative;
+        }
+
+        .track-list {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .track-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-bottom: 1px solid #333;
+        }
+
+        .track-name {
+            width: 200px;
+            font-weight: bold;
+            z-index: 2;
+        }
+
+        .bar-container {
+            flex-grow: 1;
+            background: #333;
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 0 15px;
+            position: relative;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), #03dac6);
+            width: 0%;
+            transition: width 1s ease-in-out;
+        }
+
+        .track-count {
+            width: 60px;
+            text-align: right;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .track-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .track-name {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+            .bar-container {
+                width: 100%;
+                margin: 5px 0;
+            }
+            .track-count {
+                width: 100%;
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>STRING THEORY</h1>
+        <p>Динамическая статистика прослушиваний альбома (Июнь - Декабрь 2021)</p>
+    </header>
+
+    <div class="controls">
+        <button onclick="renderChart('line')">Динамика по месяцам</button>
+        <button onclick="renderChart('bar')">Сравнение треков (Total)</button>
+        <button onclick="renderChart('doughnut')">Доля в альбоме</button>
+        <select id="sortSelect" onchange="updateData()">
+            <option value="original">Сортировка: По порядку альбома</option>
+            <option value="total-desc">Сортировка: По популярности (убыв.)</option>
+            <option value="total-asc">Сортировка: По популярности (возр.)</option>
+        </select>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-value" id="totalPlays">0</div>
+            <div class="stat-label">Всего прослушиваний</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value" id="topTrack">-</div>
+            <div class="stat-label">Самый популярный трек</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value" id="peakMonth">-</div>
+            <div class="stat-label">Пиковый месяц</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value" id="trackCount">0</div>
+            <div class="stat-label">Треков в альбоме</div>
+        </div>
+    </div>
+
+    <div class="chart-container">
+        <canvas id="mainChart"></canvas>
+    </div>
+
+    <div class="track-list" id="trackList">
+        <!-- Список треков генерируется JS -->
+    </div>
+</div>
+
+<script>
+    const rawData = [
+        { name: "250 kmh", data: [24, 6, 5, 3, 2, 0, 0], total: 40 },
+        { name: "A Land of Milk", data: [27, 4, 5, 0, 0, 2, 0], total: 38 },
+        { name: "Moonpath", data: [61, 21, 7, 0, 0, 1, 3], total: 93 },
+        { name: "Overclean", data: [53, 27, 22, 9, 4, 3, 5], total: 123 },
+        { name: "One Day Closer", data: [298, 108, 14, 5, 2, 9, 8], total: 444 },
+        { name: "At Night", data: [28, 5, 7, 4, 0, 2, 1], total: 47 },
+        { name: "The Last in the World", data: [26, 9, 7, 1, 3, 6, 11], total: 63 },
+        { name: "Trees Lost Their Burning Leaves", data: [39, 7, 8, 1, 0, 3, 1], total: 59 },
+        { name: "Tears Were Falling from the Trees", data: [94, 99, 58, 52, 41, 68, 93], total: 505 },
+        { name: "Sex", data: [171, 43, 46, 98, 29, 82, 17], total: 486 },
+        { name: "When There's Light", data: [29, 10, 7, 2, 1, 2, 2], total: 53 },
+        { name: "Come To You", data: [79, 16, 13, 6, 2, 2, 4], total: 122 },
+        { name: "Event Horizon", data: [29, 5, 7, 2, 0, 4, 0], total: 47 },
+        { name: "We Are Burning", data: [27, 7, 7, 2, 0, 2, 0], total: 45 },
+        { name: "With You by My Side", data: [23, 4, 12, 2, 0, 0, 0], total: 41 },
+        { name: "STRING THEORY", data: [1008, 371, 225, 187, 84, 186, 145], total: 2206 }
+    ];
+
+    const months = ['06.2021', '07.2021', '08.2021', '09.2021', '10.2021', '11.2021', '12.2021'];
+    let chartInstance = null;
+    let currentData = [...rawData];
+
+    function init() {
+        updateData();
+        renderSummary();
+        renderChart('line');
+        renderTrackList();
+    }
+
+    function updateData() {
+        const sortType = document.getElementById('sortSelect').value;
+        
+        if (sortType === 'total-desc') {
+            currentData.sort((a, b) => b.total - a.total);
+        } else if (sortType === 'total-asc') {
+            currentData.sort((a, b) => a.total - b.total);
+        } else {
+            // Восстанавливаем оригинальный порядок (можно захардкодить индексы, если нужно строго)
+            // Для простоты сортируем по имени или оставляем как есть, если не меняли массив
+            currentData = [...rawData].sort((a,b) => rawData.indexOf(a) - rawData.indexOf(b));
+        }
+        
+        renderSummary();
+        renderChart(document.querySelector('button[onclick*="line"]').classList.contains('active') ? 'line' : 'bar');
+        renderTrackList();
+    }
+
+    function renderSummary() {
+        const total = currentData.reduce((sum, track) => sum + track.total, 0);
+        document.getElementById('totalPlays').innerText = total.toLocaleString();
+        document.getElementById('trackCount').innerText = currentData.length;
+
+        const top = currentData.reduce((prev, current) => (prev.total > current.total) ? prev : current);
+        document.getElementById('topTrack').innerText = top.name;
+
+        // Поиск пикового месяца
+        let monthSums = new Array(7).fill(0);
+        currentData.forEach(track => {
+            track.data.forEach((val, idx) => monthSums[idx] += val);
+        });
+        const maxMonthVal = Math.max(...monthSums);
+        const maxMonthIdx = monthSums.indexOf(maxMonthVal);
+        document.getElementById('peakMonth').innerText = months[maxMonthIdx];
+    }
+
+    function renderChart(type) {
+        const ctx = document.getElementById('mainChart').getContext('2d');
+        
+        if (chartInstance) {
+            chartInstance.destroy();
+        }
+
+        let labels, datasets;
+
+        if (type === 'line' || type === 'bar') {
+            labels = months;
+            datasets = currentData.map((track, index) => ({
+                label: track.name,
+                data: track.data,
+                borderColor: `hsl(${index * 20}, 70%, 60%)`,
+                backgroundColor: `hsla(${index * 20}, 70%, 60%, 0.2)`,
+                fill: type === 'line',
+                tension: 0.3
+            }));
+            
+            // Если бар чарт и много треков, лучше показать только топ-5 или суммарно, 
+            // но оставим как есть для интерактивности (может быть мелко)
+            if (type === 'bar' && currentData.length > 10) {
+                 // Альтернатива для бара: показать Total каждого трека
+                 labels = currentData.map(t => t.name);
+                 datasets = [{
+                    label: 'Всего прослушиваний',
+                    data: currentData.map(t => t.total),
+                    backgroundColor: currentData.map((_, i) => `hsl(${i * 20}, 70%, 60%)`)
+                 }];
+            }
+        } else if (type === 'doughnut') {
+            labels = currentData.map(t => t.name);
+            datasets = [{
+                data: currentData.map(t => t.total),
+                backgroundColor: currentData.map((_, i) => `hsl(${i * 20}, 70%, 60%)`)
+            }];
+        }
+
+        chartInstance = new Chart(ctx, {
+            type: type === 'doughnut' ? 'doughnut' : (type === 'bar' && currentData.length > 10 ? 'bar' : type),
+            data: { labels, datasets },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: type === 'doughnut' ? 'right' : 'top',
+                        labels: { color: '#fff', boxWidth: 10 }
+                    }
+                },
+                scales: type !== 'doughnut' ? {
+                    y: { ticks: { color: '#b0b0b0' }, grid: { color: '#333' } },
+                    x: { ticks: { color: '#b0b0b0' }, grid: { display: false } }
+                } : {}
+            }
+        });
+    }
+
+    function renderTrackList() {
+        const container = document.getElementById('trackList');
+        container.innerHTML = '<h3>Детальная статистика по трекам</h3>';
+        
+        const maxTotal = Math.max(...currentData.map(t => t.total));
+
+        currentData.forEach(track => {
+            const percent = (track.total / maxTotal) * 100;
+            const html = `
+                <div class="track-item">
+                    <div class="track-name">${track.name}</div>
+                    <div class="bar-container">
+                        <div class="bar-fill" style="width: ${percent}%"></div>
+                    </div>
+                    <div class="track-count">${track.total}</div>
+                </div>
+            `;
+            container.innerHTML += html;
+        });
+    }
+
+    // Запуск
+    init();
+</script>
+
+</body>
+</html>

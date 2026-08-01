@@ -685,7 +685,7 @@
     let prevRanks = {};
 
     function getStars(count) {
-        if (count >= 1000) {
+        if (count >= 1000 && count < 2000) {
             return `<span class="star-badge star-gold">🌟 1K</span>`;
         }
         if (count >= 2000) {

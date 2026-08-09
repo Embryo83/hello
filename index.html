@@ -1,14 +1,580 @@
-<!doctype html>
-<html data-n-head-ssr lang="en" data-n-head="%7B%22lang%22:%7B%22ssr%22:%22en%22%7D%7D">
-  <head>
-    <title>hello</title><meta data-n-head="ssr" charset="utf-8"><meta data-n-head="ssr" name="viewport" content="width=device-width,initial-scale=1"><meta data-n-head="ssr" data-hid="description" name="description" content=""><meta data-n-head="ssr" name="format-detection" content="telephone=no"><base href="/hello/"><link data-n-head="ssr" rel="icon" type="image/x-icon" href="/favicon.ico"><link rel="preload" href="/hello/_nuxt/87a2942.js" as="script"><link rel="preload" href="/hello/_nuxt/4ebdf27.js" as="script"><link rel="preload" href="/hello/_nuxt/0e2eca0.js" as="script"><link rel="preload" href="/hello/_nuxt/94bb4fb.js" as="script"><link rel="preload" href="/hello/_nuxt/f6302cd.js" as="script"><style data-vue-ssr-id="fa7ff0ca:0">.nuxt-progress{position:fixed;top:0;left:0;right:0;height:2px;width:0;opacity:1;transition:width .1s,opacity .4s;background-color:#000;z-index:999999}.nuxt-progress.nuxt-progress-notransition{transition:none}.nuxt-progress-failed{background-color:red}</style><link rel="preload" href="/hello/_nuxt/static/1631134613/state.js" as="script"><link rel="preload" href="/hello/_nuxt/static/1631134613/payload.js" as="script"><link rel="preload" href="/hello/_nuxt/static/1631134613/manifest.js" as="script">
-  </head>
-  <body>
-    <div data-server-rendered="true" id="__nuxt"><!----><div id="__layout"><div class="relative flex items-top justify-center min-h-screen bg-gray-100 sm:items-center sm:pt-0"><link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet"> <div class="max-w-4xl mx-auto sm:px-6 lg:px-8"><a href="https://nuxtjs.org" target="_blank" class="flex justify-center pt-8 sm:pt-0"><svg width="218" height="45" viewBox="0 0 159 30" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M55.5017 6.81866H60.1727L70.0719 22.9912V6.81866H74.3837V29.7345H69.7446L59.8135 13.5955V29.7345H55.5017V6.81866Z" fill="#003543"></path> <path d="M93.657 29.7344H89.6389V27.1747C88.7241 28.9761 86.8628 29.9904 84.5113 29.9904C80.7869 29.9904 78.3684 27.3059 78.3684 23.4423V13.2339H82.3865V22.5976C82.3865 24.8566 83.7594 26.4276 85.8171 26.4276C88.0712 26.4276 89.6389 24.6598 89.6389 22.2377V13.2339H93.657V29.7344Z" fill="#003543"></path> <path d="M107.64 29.7344L103.784 24.2342L99.9291 29.7344H95.6492L101.596 21.1242L96.1074 13.2339H100.485L103.784 17.9821L107.051 13.2339H111.461L105.94 21.1242L111.886 29.7344H107.64Z" fill="#003543"></path> <path d="M120.053 8.25848V13.2339H124.627V16.6063H120.053V24.7974C120.053 25.0725 120.162 25.3363 120.356 25.531C120.55 25.7257 120.813 25.8353 121.087 25.8357H124.627V29.728H121.98C118.386 29.728 116.035 27.6323 116.035 23.9687V16.6095H112.801V13.2339H114.83C115.776 13.2339 116.327 12.6692 116.327 11.7349V8.25848H120.053Z" fill="#003543"></path> <path d="M134.756 24.5446V6.81866H139.066V23.1864C139.066 27.6067 136.943 29.7345 133.349 29.7345H128.332V25.8421H133.461C133.804 25.8421 134.134 25.7054 134.377 25.4621C134.619 25.2188 134.756 24.8888 134.756 24.5446Z" fill="#003543"></path> <path d="M141.649 22.0409H145.799C146.029 24.6006 147.728 26.2308 150.472 26.2308C152.923 26.2308 154.623 25.2501 154.623 23.2199C154.623 18.3085 142.331 21.7129 142.331 12.9395C142.334 9.17515 145.568 6.55945 150.215 6.55945C155.05 6.55945 158.317 9.34153 158.516 13.6306H154.388C154.193 11.6341 152.632 10.2918 150.207 10.2918C147.953 10.2918 146.548 11.3397 146.548 12.9427C146.548 18.0173 159 14.2226 159 23.1576C159 27.4131 155.504 30 150.474 30C145.279 30 141.882 26.8563 141.654 22.0441" fill="#003543"></path> <path d="M24.7203 29.704H41.1008C41.6211 29.7041 42.1322 29.5669 42.5828 29.3061C43.0334 29.0454 43.4075 28.6704 43.6675 28.2188C43.9275 27.7672 44.0643 27.2549 44.0641 26.7335C44.0639 26.2121 43.9266 25.6999 43.6662 25.2485L32.6655 6.15312C32.4055 5.70162 32.0315 5.32667 31.581 5.06598C31.1305 4.8053 30.6195 4.66805 30.0994 4.66805C29.5792 4.66805 29.0682 4.8053 28.6177 5.06598C28.1672 5.32667 27.7932 5.70162 27.5332 6.15312L24.7203 11.039L19.2208 1.48485C18.9606 1.03338 18.5864 0.658493 18.1358 0.397853C17.6852 0.137213 17.1741 0 16.6538 0C16.1336 0 15.6225 0.137213 15.1719 0.397853C14.7213 0.658493 14.3471 1.03338 14.0868 1.48485L0.397874 25.2485C0.137452 25.6999 0.000226653 26.2121 2.8053e-07 26.7335C-0.000226092 27.2549 0.136554 27.7672 0.396584 28.2188C0.656614 28.6704 1.03072 29.0454 1.48129 29.3061C1.93185 29.5669 2.44298 29.7041 2.96326 29.704H13.2456C17.3195 29.704 20.3239 27.9106 22.3912 24.4118L27.4102 15.7008L30.0986 11.039L38.1667 25.0422H27.4102L24.7203 29.704ZM13.0779 25.0374L5.9022 25.0358L16.6586 6.36589L22.0257 15.7008L18.4322 21.9401C17.0593 24.2103 15.4996 25.0374 13.0779 25.0374Z" fill="#00DC82"></path></svg></a> <div class="mt-8 bg-white overflow-hidden shadow sm:rounded-lg p-6"><h2 class="text-2xl leading-7 font-semibold">
-        Welcome to your Nuxt Application
-      </h2> <p class="mt-3 text-gray-600">
-        We recommend you take a look at the <a href="https://nuxtjs.org" target="_blank" class="text-green-500 hover:underline">Nuxt documentation</a>, whether you are new or have previous experience with the framework.<br></p> <p class="mt-4 pt-4 text-gray-800 border-t border-dashed">
-        To get started, remove <code class="bg-gray-100 text-sm p-1 rounded border">components/Tutorial.vue</code> and start coding in <code class="bg-gray-100 text-sm p-1 rounded border">pages/index.vue</code>. Have fun!
-      </p></div> <div class="flex justify-center pt-4 space-x-2"><a href="https://github.com/nuxt/nuxt.js" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" class="w-6 h-6 text-gray-600 hover:text-gray-800"><path d="M12 2.247a10 10 0 0 0-3.162 19.487c.5.088.687-.212.687-.475c0-.237-.012-1.025-.012-1.862c-2.513.462-3.163-.613-3.363-1.175a3.636 3.636 0 0 0-1.025-1.413c-.35-.187-.85-.65-.013-.662a2.001 2.001 0 0 1 1.538 1.025a2.137 2.137 0 0 0 2.912.825a2.104 2.104 0 0 1 .638-1.338c-2.225-.25-4.55-1.112-4.55-4.937a3.892 3.892 0 0 1 1.025-2.688a3.594 3.594 0 0 1 .1-2.65s.837-.262 2.75 1.025a9.427 9.427 0 0 1 5 0c1.912-1.3 2.75-1.025 2.75-1.025a3.593 3.593 0 0 1 .1 2.65a3.869 3.869 0 0 1 1.025 2.688c0 3.837-2.338 4.687-4.563 4.937a2.368 2.368 0 0 1 .675 1.85c0 1.338-.012 2.413-.012 2.75c0 .263.187.575.687.475A10.005 10.005 0 0 0 12 2.247z" fill="currentColor"></path></svg></a> <a href="https://twitter.com/nuxt_js" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="32" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" class="w-6 h-6 text-gray-600 hover:text-gray-800"><path d="M22.46 6c-.77.35-1.6.58-2.46.69c.88-.53 1.56-1.37 1.88-2.38c-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29c0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15c0 1.49.75 2.81 1.91 3.56c-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07a4.28 4.28 0 0 0 4 2.98a8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21C16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56c.84-.6 1.56-1.36 2.14-2.23z" fill="currentColor"></path></svg></a></div></div></div></div></div><script defer src="/hello/_nuxt/static/1631134613/state.js"></script><script src="/hello/_nuxt/87a2942.js" defer></script><script src="/hello/_nuxt/f6302cd.js" defer></script><script src="/hello/_nuxt/4ebdf27.js" defer></script><script src="/hello/_nuxt/0e2eca0.js" defer></script><script src="/hello/_nuxt/94bb4fb.js" defer></script>
-  </body>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STRING THEORY - Статистика прослушиваний</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #e94560, #ff6b6b, #feca57);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #a0a0a0;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .total-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(233, 69, 96, 0.3);
+        }
+        
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #e94560;
+        }
+        
+        .stat-label {
+            color: #a0a0a0;
+            margin-top: 5px;
+            font-size: 0.9em;
+        }
+        
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .chart-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .chart-title {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            color: #feca57;
+            text-align: center;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn:hover {
+            background: #e94560;
+            transform: scale(1.05);
+        }
+        
+        .btn.active {
+            background: #e94560;
+            box-shadow: 0 0 20px rgba(233, 69, 96, 0.5);
+        }
+        
+        .track-list {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .track-list h2 {
+            color: #feca57;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .track-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            margin: 8px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        
+        .track-item:hover {
+            background: rgba(233, 69, 96, 0.2);
+            transform: translateX(5px);
+        }
+        
+        .track-item.selected {
+            background: rgba(233, 69, 96, 0.3);
+            border-left-color: #e94560;
+        }
+        
+        .track-name {
+            font-weight: 500;
+        }
+        
+        .track-total {
+            color: #e94560;
+            font-weight: bold;
+        }
+        
+        .bar-container {
+            flex: 1;
+            margin: 0 20px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #e94560, #ff6b6b);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        @media (max-width: 768px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .stat-value {
+                font-size: 2em;
+            }
+        }
+        
+        .tooltip-custom {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.9);
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            pointer-events: none;
+            z-index: 1000;
+            border: 1px solid #e94560;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎵 STRING THEORY</h1>
+        <p class="subtitle">Интерактивная статистика прослушиваний альбома</p>
+        
+        <div class="total-stats">
+            <div class="stat-card">
+                <div class="stat-value" id="totalPlays">2,206</div>
+                <div class="stat-label">Всего прослушиваний</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="totalTracks">16</div>
+                <div class="stat-label">Треков в альбоме</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="topTrack">Sex</div>
+                <div class="stat-label">Самый популярный трек</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="peakMonth">06.2021</div>
+                <div class="stat-label">Пик прослушиваний</div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button class="btn active" onclick="setChartType('bar')">Столбчатая</button>
+            <button class="btn" onclick="setChartType('line')">Линейная</button>
+            <button class="btn" onclick="setChartType('area')">Область</button>
+            <button class="btn" onclick="toggleSort()">Сортировать</button>
+            <button class="btn" onclick="resetView()">Сбросить</button>
+        </div>
+        
+        <div class="charts-grid">
+            <div class="chart-container">
+                <h3 class="chart-title">📊 Динамика прослушиваний по месяцам</h3>
+                <canvas id="mainChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <h3 class="chart-title">🎯 Распределение по трекам</h3>
+                <canvas id="pieChart"></canvas>
+            </div>
+        </div>
+        
+        <div class="chart-container" style="margin-bottom: 30px;">
+            <h3 class="chart-title">📈 Сравнительная статистика треков</h3>
+            <canvas id="horizontalBarChart"></canvas>
+        </div>
+        
+        <div class="track-list">
+            <h2>🎼 Треки альбома (кликните для детализации)</h2>
+            <div id="trackList"></div>
+        </div>
+    </div>
+    
+    <div class="tooltip-custom" id="tooltip"></div>
+
+    <script>
+        const data = {
+            tracks: [
+                { name: "250 kmh", plays: [24, 6, 5, 3, 2, 0, 0], total: 40 },
+                { name: "A Land of Milk", plays: [27, 4, 5, 0, 0, 2, 0], total: 38 },
+                { name: "Moonpath", plays: [61, 21, 7, 0, 0, 1, 3], total: 93 },
+                { name: "Overclean", plays: [53, 27, 22, 9, 4, 3, 5], total: 123 },
+                { name: "One Day Closer", plays: [298, 108, 14, 5, 2, 9, 8], total: 444 },
+                { name: "At Night", plays: [28, 5, 7, 4, 0, 2, 1], total: 47 },
+                { name: "The Last in the World", plays: [26, 9, 7, 1, 3, 6, 11], total: 63 },
+                { name: "Trees Lost Their Burning Leaves", plays: [39, 7, 8, 1, 0, 3, 1], total: 59 },
+                { name: "Tears Were Falling from the Trees", plays: [94, 99, 58, 52, 41, 68, 93], total: 505 },
+                { name: "Sex", plays: [171, 43, 46, 98, 29, 82, 17], total: 486 },
+                { name: "When There's Light", plays: [29, 10, 7, 2, 1, 2, 2], total: 53 },
+                { name: "Come To You", plays: [79, 16, 13, 6, 2, 2, 4], total: 122 },
+                { name: "Event Horizon", plays: [29, 5, 7, 2, 0, 4, 0], total: 47 },
+                { name: "We Are Burning", plays: [27, 7, 7, 2, 0, 2, 0], total: 45 },
+                { name: "With You by My Side", plays: [23, 4, 12, 2, 0, 0, 0], total: 41 },
+                { name: "STRING THEORY", plays: [1008, 371, 225, 187, 84, 186, 145], total: 2206 }
+            ],
+            months: ["06.2021", "07.2021", "08.2021", "09.2021", "10.2021", "11.2021", "12.2021"]
+        };
+
+        let mainChart, pieChart, horizontalBarChart;
+        let currentChartType = 'bar';
+        let isSorted = false;
+        let selectedTrack = null;
+
+        const colors = [
+            '#e94560', '#ff6b6b', '#feca57', '#48dbfb', '#ff9ff3',
+            '#54a0ff', '#5f27cd', '#00d2d3', '#1dd1a1', '#c8d6e5',
+            '#ff9f43', '#ee5a24', '#0abde3', '#10ac84', '#222f3e', '#fd79a8'
+        ];
+
+        function init() {
+            renderTrackList();
+            initMainChart();
+            initPieChart();
+            initHorizontalBarChart();
+            updateStats();
+        }
+
+        function renderTrackList() {
+            const container = document.getElementById('trackList');
+            const sortedTracks = isSorted ? 
+                [...data.tracks].sort((a, b) => b.total - a.total) : 
+                data.tracks;
+            
+            const maxTotal = Math.max(...data.tracks.map(t => t.total));
+            
+            container.innerHTML = sortedTracks.map((track, index) => `
+                <div class="track-item ${selectedTrack === track.name ? 'selected' : ''}" 
+                     onclick="selectTrack('${track.name}')">
+                    <span class="track-name">${index + 1}. ${track.name}</span>
+                    <div class="bar-container">
+                        <div class="bar-fill" style="width: ${(track.total / maxTotal) * 100}%"></div>
+                    </div>
+                    <span class="track-total">${track.total}</span>
+                </div>
+            `).join('');
+        }
+
+        function selectTrack(trackName) {
+            if (selectedTrack === trackName) {
+                selectedTrack = null;
+                updateMainChart(null);
+            } else {
+                selectedTrack = trackName;
+                updateMainChart(trackName);
+            }
+            renderTrackList();
+        }
+
+        function initMainChart() {
+            const ctx = document.getElementById('mainChart').getContext('2d');
+            
+            const datasets = data.tracks.map((track, index) => ({
+                label: track.name,
+                data: track.plays,
+                borderColor: colors[index % colors.length],
+                backgroundColor: colors[index % colors.length] + '20',
+                borderWidth: 2,
+                fill: currentChartType === 'area',
+                tension: 0.4,
+                hidden: true
+            }));
+
+            // Показать топ-5 и заглавный трек по умолчанию
+            const topTracks = [...data.tracks].sort((a, b) => b.total - a.total).slice(0, 5);
+            datasets.forEach(ds => {
+                if (topTracks.find(t => t.name === ds.label) || ds.label === 'STRING THEORY') {
+                    ds.hidden = false;
+                }
+            });
+
+            mainChart = new Chart(ctx, {
+                type: currentChartType === 'area' ? 'line' : currentChartType,
+                data: {
+                    labels: data.months,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#fff',
+                                padding: 10,
+                                font: { size: 10 }
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                            titleColor: '#e94560',
+                            bodyColor: '#fff',
+                            borderColor: '#e94560',
+                            borderWidth: 1
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#a0a0a0' }
+                        },
+                        x: {
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#a0a0a0' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateMainChart(trackName) {
+            if (mainChart) {
+                mainChart.data.datasets.forEach(ds => {
+                    if (trackName) {
+                        ds.hidden = ds.label !== trackName;
+                    } else {
+                        const topTracks = [...data.tracks].sort((a, b) => b.total - a.total).slice(0, 5);
+                        ds.hidden = !(topTracks.find(t => t.name === ds.label) || ds.label === 'STRING THEORY');
+                    }
+                });
+                mainChart.update();
+            }
+        }
+
+        function initPieChart() {
+            const ctx = document.getElementById('pieChart').getContext('2d');
+            
+            pieChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: data.tracks.map(t => t.name),
+                    datasets: [{
+                        data: data.tracks.map(t => t.total),
+                        backgroundColor: colors,
+                        borderColor: 'rgba(0, 0, 0, 0.3)',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                color: '#fff',
+                                padding: 8,
+                                font: { size: 9 }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                            titleColor: '#e94560',
+                            bodyColor: '#fff',
+                            borderColor: '#e94560',
+                            borderWidth: 1,
+                            callbacks: {
+                                label: function(context) {
+                                    const value = context.raw;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((value / total) * 100).toFixed(1);
+                                    return `${value} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function initHorizontalBarChart() {
+            const ctx = document.getElementById('horizontalBarChart').getContext('2d');
+            
+            const sortedTracks = [...data.tracks].sort((a, b) => b.total - a.total);
+            
+            horizontalBarChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: sortedTracks.map(t => t.name),
+                    datasets: [{
+                        label: 'Прослушивания',
+                        data: sortedTracks.map(t => t.total),
+                        backgroundColor: colors,
+                        borderColor: colors.map(c => c.replace(')', ', 0.8)').replace('rgb', 'rgba')),
+                        borderWidth: 2,
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                            titleColor: '#e94560',
+                            bodyColor: '#fff',
+                            borderColor: '#e94560',
+                            borderWidth: 1
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#a0a0a0' }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#fff', font: { size: 10 } }
+                        }
+                    }
+                }
+            });
+        }
+
+        function setChartType(type) {
+            currentChartType = type;
+            
+            document.querySelectorAll('.btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.toLowerCase().includes(
+                    type === 'bar' ? 'столбчатая' : 
+                    type === 'line' ? 'линейная' : 'область'
+                )) {
+                    btn.classList.add('active');
+                }
+            });
+
+            if (mainChart) {
+                mainChart.destroy();
+            }
+            initMainChart();
+        }
+
+        function toggleSort() {
+            isSorted = !isSorted;
+            renderTrackList();
+            
+            if (horizontalBarChart) {
+                horizontalBarChart.destroy();
+            }
+            initHorizontalBarChart();
+        }
+
+        function resetView() {
+            selectedTrack = null;
+            isSorted = false;
+            setChartType('bar');
+            renderTrackList();
+            updateMainChart(null);
+        }
+
+        function updateStats() {
+            const totalPlays = data.tracks.reduce((sum, t) => sum + t.total, 0);
+            const topTrack = [...data.tracks].sort((a, b) => b.total - a.total)[0];
+            
+            const monthlyTotals = data.months.map((_, i) => 
+                data.tracks.reduce((sum, t) => sum + t.plays[i], 0)
+            );
+            const peakMonthIndex = monthlyTotals.indexOf(Math.max(...monthlyTotals));
+            
+            document.getElementById('totalPlays').textContent = totalPlays.toLocaleString();
+            document.getElementById('totalTracks').textContent = data.tracks.length;
+            document.getElementById('topTrack').textContent = topTrack.name.length > 15 ? 
+                topTrack.name.substring(0, 15) + '...' : topTrack.name;
+            document.getElementById('peakMonth').textContent = data.months[peakMonthIndex];
+        }
+
+        // Инициализация при загрузке
+        window.onload = init;
+    </script>
+</body>
 </html>
